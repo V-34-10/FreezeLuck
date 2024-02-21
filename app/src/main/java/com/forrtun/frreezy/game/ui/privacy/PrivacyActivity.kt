@@ -44,10 +44,10 @@ class PrivacyActivity : AppCompatActivity() {
         startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(linkPrivacyPolicy)))
 
     @Deprecated(
-        "Deprecated in Java",
-        ReplaceWith("super.onBackPressed()", "androidx.appcompat.app.AppCompatActivity")
+        "Deprecated in Java"
     )
     override fun onBackPressed() {
         super.onBackPressed()
+        finish()
     }
 }

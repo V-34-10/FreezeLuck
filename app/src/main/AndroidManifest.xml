@@ -19,6 +19,9 @@
         android:theme="@style/Theme.FortuneFreezy"
         tools:targetApi="31">
         <activity
+            android:name=".ui.menu.MenuGamesActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.scene.SceneActivity"
             android:exported="false"
             android:screenOrientation="portrait" />

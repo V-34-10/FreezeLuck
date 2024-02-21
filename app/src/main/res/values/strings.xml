@@ -3,4 +3,7 @@
     <string name="text_loading">LOADING...</string>
     <string name="btn_accept">btn_accept</string>
     <string name="text_privacy">Privacy policy and terms</string>
+    <string name="text_menu">Welcome to the Excitement</string>
+    <string name="text_description">Discover a world where every spin, roll, and card dealt brings you closer to thrilling wins and endless entertainment.</string>
+    <string name="btn_play">btn_play</string>
 </resources>
