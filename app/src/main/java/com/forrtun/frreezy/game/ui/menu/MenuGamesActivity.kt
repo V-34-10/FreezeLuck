@@ -9,7 +9,6 @@ import com.forrtun.frreezy.game.R
 import com.forrtun.frreezy.game.databinding.ActivityMenuGamesBinding
 import com.forrtun.frreezy.game.ui.scene.SceneActivity
 import com.forrtun.frreezy.game.ui.settings.SettingsActivity
-import com.forrtun.frreezy.game.utils.FullScreen
 import com.forrtun.frreezy.game.utils.FullScreen.setFullScreen
 
 class MenuGamesActivity : AppCompatActivity() {
@@ -21,10 +20,10 @@ class MenuGamesActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         setFullScreen(this)
-        buttonRunGame()
+        buttonsRunGame()
     }
 
-    private fun buttonRunGame() {
+    private fun buttonsRunGame() {
         val animationClick = AnimationUtils.loadAnimation(this, R.anim.button_animation)
         for ((i, buttonGame) in listButtonName.withIndex()) {
             buttonGame.setOnClickListener {

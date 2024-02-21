@@ -4,6 +4,97 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background_privacy"
     tools:context=".ui.settings.SettingsActivity">
+
+    <ImageView
+        android:id="@+id/btn_back"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_margin="@dimen/dp30"
+        android:background="@drawable/btn_back"
+        android:clickable="true"
+        android:contentDescription="@string/btn_back"
+        android:focusable="true"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/menu"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_block_settings"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_back">
+
+        <TextView
+            android:id="@+id/text_sound"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="75dp"
+            android:fontFamily="@font/aleo_bold"
+            android:text="@string/text_sound"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp25"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <SeekBar
+            android:id="@+id/seekBarSound"
+            android:layout_width="225dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:progressDrawable="@drawable/seekbar_background"
+            android:thumb="@drawable/custom_thumb"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_sound" />
+
+        <TextView
+            android:id="@+id/text_music"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:fontFamily="@font/aleo_bold"
+            android:text="@string/text_music"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp25"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/seekBarSound" />
+
+        <SeekBar
+            android:id="@+id/seekBarMusic"
+            android:layout_width="225dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:progressDrawable="@drawable/seekbar_background"
+            android:thumb="@drawable/custom_thumb"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_music" />
+
+        <ImageView
+            android:id="@+id/btn_remove"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="75dp"
+            android:layout_marginBottom="75dp"
+            android:background="@drawable/btn_reset_score"
+            android:clickable="true"
+            android:contentDescription="@string/btn_reset_score"
+            android:focusable="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/seekBarMusic" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

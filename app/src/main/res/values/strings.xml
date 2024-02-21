@@ -16,4 +16,8 @@
     <string name="btn_game_six">btn_game_six</string>
     <string name="btn_game_seven">btn_game_seven</string>
     <string name="btn_game_eight">btn_game_eight</string>
+    <string name="btn_back">btn_back</string>
+    <string name="text_sound">SOUND</string>
+    <string name="text_music">MUSIC</string>
+    <string name="btn_reset_score">btn_reset_score</string>
 </resources>
