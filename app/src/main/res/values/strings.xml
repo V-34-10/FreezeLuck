@@ -6,4 +6,14 @@
     <string name="text_menu">Welcome to the Excitement</string>
     <string name="text_description">Discover a world where every spin, roll, and card dealt brings you closer to thrilling wins and endless entertainment.</string>
     <string name="btn_play">btn_play</string>
+    <string name="btn_exit">btn_exit</string>
+    <string name="btn_settings">btn_settings</string>
+    <string name="btn_game_first">btn_game_first</string>
+    <string name="btn_game_second">btn_game_second</string>
+    <string name="btn_game_three">btn_game_three</string>
+    <string name="btn_game_four">btn_game_four</string>
+    <string name="btn_game_fife">btn_game_fife</string>
+    <string name="btn_game_six">btn_game_six</string>
+    <string name="btn_game_seven">btn_game_seven</string>
+    <string name="btn_game_eight">btn_game_eight</string>
 </resources>
