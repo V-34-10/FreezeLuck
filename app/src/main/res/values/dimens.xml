@@ -6,4 +6,7 @@
     <dimen name="dp15">15dp</dimen>
     <dimen name="sp35">35sp</dimen>
     <dimen name="sp25">25sp</dimen>
+    <dimen name="dp10">10dp</dimen>
+    <dimen name="sp18">18sp</dimen>
+    <dimen name="sp30">30sp</dimen>
 </resources>

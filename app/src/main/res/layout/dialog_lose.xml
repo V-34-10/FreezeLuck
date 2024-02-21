@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/dialog_info"
+    android:layout_width="350dp"
+    android:layout_height="350dp"
+    android:layout_gravity="center"
+    android:layout_margin="@dimen/dp10"
+    android:background="@drawable/background_dialog_lose"
+    android:orientation="vertical"
+    android:scaleType="centerCrop">
+
+    <TextView
+        android:id="@+id/text_score"
+        android:layout_width="100dp"
+        android:layout_height="35dp"
+        android:layout_marginBottom="75dp"
+        android:background="@drawable/background_textview"
+        android:fontFamily="@font/aleo_bold"
+        android:paddingStart="60dp"
+        android:text="@string/text_lose_score"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp30"
+        app:layout_constraintBottom_toTopOf="@+id/btn_continue"
+        app:layout_constraintEnd_toEndOf="@+id/btn_continue"
+        app:layout_constraintStart_toStartOf="@+id/btn_restart"
+        tools:ignore="RtlSymmetry" />
+
+
+    <ImageView
+        android:id="@+id/btn_restart"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_marginStart="50dp"
+        android:clickable="true"
+        android:contentDescription="@string/btn_restart"
+        android:focusable="true"
+        android:src="@drawable/btn_restart"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="ImageContrastCheck" />
+
+    <ImageView
+        android:id="@+id/btn_continue"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_marginEnd="50dp"
+        android:clickable="true"
+        android:contentDescription="@string/btn_continue"
+        android:focusable="true"
+        android:src="@drawable/btn_continue"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
