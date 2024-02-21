@@ -4,6 +4,38 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background_privacy"
     tools:context=".ui.privacy.PrivacyActivity">
+
+    <TextView
+        android:id="@+id/text_privacy"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:fontFamily="@font/aleo"
+        android:gravity="center_horizontal"
+        android:shadowColor="@color/yellow"
+        android:shadowDx="15"
+        android:shadowDy="15"
+        android:shadowRadius="2"
+        android:text="@string/text_privacy"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp45"
+        app:layout_constraintEnd_toEndOf="@+id/btn_accept"
+        app:layout_constraintStart_toStartOf="@+id/btn_accept"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/btn_accept"
+        android:layout_width="300dp"
+        android:layout_height="120dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/btn_accept"
+        android:clickable="true"
+        android:contentDescription="@string/btn_accept"
+        android:focusable="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
