@@ -22,6 +22,20 @@ class MenuGamesActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+        listGames = listOf(
+            getString(R.string.title_game_first),
+            getString(R.string.title_game_second),
+            getString(R.string.title_game_three),
+            getString(R.string.title_game_four),
+            getString(R.string.title_game_fife)
+        )
+        listButtonName = listOf(
+            binding.btnGameFirst,
+            binding.btnGameSecond,
+            binding.btnGameThree,
+            binding.btnGameFour,
+            binding.btnGameFife
+        )
         setFullScreen(this)
         buttonsRunGame()
     }
