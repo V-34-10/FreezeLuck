@@ -34,8 +34,10 @@
     <string name="title_game_fife">MinerFifeGame</string>
     <string name="default_win">WIN\n0</string>
     <string name="default_total">Total\n10000</string>
-    <string name="default_bet">BET\n100</string>
+    <string name="default_bet">BET\n300</string>
     <string name="btn_minus_bet">btn_minus_bet</string>
     <string name="btn_plus_bet">btn_plus_bet</string>
     <string name="btn_spin">btn_spin</string>
+    <string name="arrow_wheel">arrow_wheel</string>
+    <string name="wheel_scene">wheel_scene</string>
 </resources>
