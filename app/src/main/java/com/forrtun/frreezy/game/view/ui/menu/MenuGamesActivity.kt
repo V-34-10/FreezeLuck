@@ -1,4 +1,4 @@
-package com.forrtun.frreezy.game.ui.menu
+package com.forrtun.frreezy.game.view.ui.menu
 
 import android.app.Dialog
 import android.content.Intent
@@ -10,8 +10,8 @@ import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import com.forrtun.frreezy.game.R
 import com.forrtun.frreezy.game.databinding.ActivityMenuGamesBinding
-import com.forrtun.frreezy.game.ui.scene.SceneActivity
-import com.forrtun.frreezy.game.ui.settings.SettingsActivity
+import com.forrtun.frreezy.game.view.ui.scene.SceneActivity
+import com.forrtun.frreezy.game.view.ui.settings.SettingsActivity
 import com.forrtun.frreezy.game.utils.FullScreen.setFullScreen
 
 class MenuGamesActivity : AppCompatActivity() {

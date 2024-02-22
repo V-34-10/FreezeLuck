@@ -1,4 +1,4 @@
-package com.forrtun.frreezy.game.ui.settings
+package com.forrtun.frreezy.game.view.ui.settings
 
 import android.content.Context
 import android.content.Intent
@@ -11,7 +11,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.forrtun.frreezy.game.R
 import com.forrtun.frreezy.game.databinding.ActivitySettingsBinding
-import com.forrtun.frreezy.game.ui.menu.MenuGamesActivity
+import com.forrtun.frreezy.game.view.ui.menu.MenuGamesActivity
 import com.forrtun.frreezy.game.utils.FullScreen.setFullScreen
 
 class SettingsActivity : AppCompatActivity() {

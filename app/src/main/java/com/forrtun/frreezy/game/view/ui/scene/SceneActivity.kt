@@ -1,4 +1,4 @@
-package com.forrtun.frreezy.game.ui.scene
+package com.forrtun.frreezy.game.view.ui.scene
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -7,12 +7,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.forrtun.frreezy.game.R
 import com.forrtun.frreezy.game.databinding.ActivitySceneBinding
-import com.forrtun.frreezy.game.ui.menu.MenuGamesActivity
-import com.forrtun.frreezy.game.ui.scene.games.MinerFifeGameFragment
-import com.forrtun.frreezy.game.ui.scene.games.MinerSecondGameFragment
-import com.forrtun.frreezy.game.ui.scene.games.SlotsFirstGameFragment
-import com.forrtun.frreezy.game.ui.scene.games.WheelFourGameFragment
-import com.forrtun.frreezy.game.ui.scene.games.WheelThreeGameFragment
+import com.forrtun.frreezy.game.view.ui.menu.MenuGamesActivity
+import com.forrtun.frreezy.game.view.ui.scene.games.MinerFifeGameFragment
+import com.forrtun.frreezy.game.view.ui.scene.games.MinerSecondGameFragment
+import com.forrtun.frreezy.game.view.ui.scene.games.SlotsFirstGameFragment
+import com.forrtun.frreezy.game.view.ui.scene.games.WheelFourGameFragment
+import com.forrtun.frreezy.game.view.ui.scene.games.WheelThreeGameFragment
 import com.forrtun.frreezy.game.utils.FullScreen.setFullScreen
 
 class SceneActivity : AppCompatActivity() {

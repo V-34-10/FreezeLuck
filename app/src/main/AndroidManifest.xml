@@ -20,27 +20,27 @@
         android:theme="@style/Theme.FortuneFreezy"
         tools:targetApi="31">
         <activity
-            android:name=".ui.menu.MenuGamesActivity"
+            android:name=".view.ui.menu.MenuGamesActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.scene.SceneActivity"
+            android:name=".view.ui.scene.SceneActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.menu.MenuActivity"
+            android:name=".view.ui.menu.MenuActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.settings.SettingsActivity"
+            android:name=".view.ui.settings.SettingsActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.privacy.PrivacyActivity"
+            android:name=".view.ui.privacy.PrivacyActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.splash.SplashActivity"
+            android:name=".view.ui.splash.SplashActivity"
             android:exported="true"
             android:screenOrientation="portrait">
             <intent-filter>

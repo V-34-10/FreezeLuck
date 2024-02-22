@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/background_privacy"
     android:orientation="vertical"
-    tools:context=".ui.menu.MenuGamesActivity">
+    tools:context=".view.ui.menu.MenuGamesActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/menu_control_top"

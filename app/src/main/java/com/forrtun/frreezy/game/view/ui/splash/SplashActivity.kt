@@ -1,4 +1,4 @@
-package com.forrtun.frreezy.game.ui.splash
+package com.forrtun.frreezy.game.view.ui.splash
 
 import android.animation.ValueAnimator
 import android.annotation.SuppressLint
@@ -9,8 +9,8 @@ import android.os.Handler
 import android.util.DisplayMetrics
 import androidx.appcompat.app.AppCompatActivity
 import com.forrtun.frreezy.game.databinding.ActivityMainBinding
-import com.forrtun.frreezy.game.ui.menu.MenuActivity
-import com.forrtun.frreezy.game.ui.privacy.PrivacyActivity
+import com.forrtun.frreezy.game.view.ui.menu.MenuActivity
+import com.forrtun.frreezy.game.view.ui.privacy.PrivacyActivity
 import com.forrtun.frreezy.game.utils.FullScreen.setFullScreen
 
 @SuppressLint("CustomSplashScreen")

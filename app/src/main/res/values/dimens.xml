@@ -9,4 +9,8 @@
     <dimen name="dp10">10dp</dimen>
     <dimen name="sp18">18sp</dimen>
     <dimen name="sp30">30sp</dimen>
+    <dimen name="dp25">25dp</dimen>
+    <dimen name="sp14">14sp</dimen>
+    <dimen name="sp12">12sp</dimen>
+    <dimen name="dp60">60dp</dimen>
 </resources>

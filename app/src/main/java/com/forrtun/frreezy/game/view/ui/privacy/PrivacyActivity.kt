@@ -1,4 +1,4 @@
-package com.forrtun.frreezy.game.ui.privacy
+package com.forrtun.frreezy.game.view.ui.privacy
 
 import android.content.Intent
 import android.net.Uri
@@ -8,7 +8,7 @@ import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
 import com.forrtun.frreezy.game.R
 import com.forrtun.frreezy.game.databinding.ActivityPrivacyBinding
-import com.forrtun.frreezy.game.ui.menu.MenuActivity
+import com.forrtun.frreezy.game.view.ui.menu.MenuActivity
 import com.forrtun.frreezy.game.utils.FullScreen.setFullScreen
 
 class PrivacyActivity : AppCompatActivity() {

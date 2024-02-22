@@ -1,4 +1,4 @@
-package com.forrtun.frreezy.game.ui.menu
+package com.forrtun.frreezy.game.view.ui.menu
 
 import android.content.Intent
 import android.os.Bundle
