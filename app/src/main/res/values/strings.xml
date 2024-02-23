@@ -40,4 +40,10 @@
     <string name="btn_spin">btn_spin</string>
     <string name="arrow_wheel">arrow_wheel</string>
     <string name="wheel_scene">wheel_scene</string>
+    <string name="btn_first_set_stake">btn_first_set_stake</string>
+    <string name="btn_second_set_stake">btn_second_set_stake</string>
+    <string name="btn_three_set_stake">btn_three_set_stake</string>
+    <string name="btn_four_set_stake">btn_four_set_stake</string>
+    <string name="btn_fife_set_stake">btn_fife_set_stake</string>
+    <string name="btn_six_set_stake">btn_six_set_stake</string>
 </resources>

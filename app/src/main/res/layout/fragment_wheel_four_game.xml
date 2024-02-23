@@ -1,8 +1,226 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/background_four_wheel_game"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background_four_wheel_game"
     tools:context=".view.ui.scene.games.WheelFourGameFragment">
 
-</FrameLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/control_game"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/btn_back"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_margin="20dp"
+            android:background="@drawable/btn_back"
+            android:clickable="true"
+            android:contentDescription="@string/btn_back"
+            android:focusable="true"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/text_win"
+            android:layout_width="120dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/background_win_three"
+            android:fontFamily="@font/aleo_bold"
+            android:lineSpacingExtra="2dp"
+            android:padding="@dimen/dp15"
+            android:paddingStart="@dimen/dp30"
+            android:text="@string/default_win"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp12"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/text_balance"
+            app:layout_constraintTop_toBottomOf="@+id/btn_back"
+            tools:ignore="RtlSymmetry" />
+
+        <TextView
+            android:id="@+id/text_balance"
+            android:layout_width="120dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/background_win_three"
+            android:fontFamily="@font/aleo_bold"
+            android:lineSpacingExtra="2dp"
+            android:padding="@dimen/dp15"
+            android:paddingStart="@dimen/dp30"
+            android:text="@string/default_total"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp12"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@+id/btn_back"
+            app:layout_constraintTop_toBottomOf="@+id/btn_back"
+            tools:ignore="RtlSymmetry" />
+
+        <TextView
+            android:id="@+id/text_bet"
+            android:layout_width="120dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/background_textview_three"
+            android:fontFamily="@font/aleo_bold"
+            android:lineSpacingExtra="2dp"
+            android:padding="@dimen/dp15"
+            android:text="@string/default_bet"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp12"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/text_win"
+            app:layout_constraintTop_toBottomOf="@+id/btn_back"
+            tools:ignore="RtlSymmetry" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/control_bar_game"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/stake_bar_btn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/control_game">
+
+        <ImageView
+            android:id="@+id/wheel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:contentDescription="@string/wheel_scene"
+            android:src="@drawable/wheel_second"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/arrow_wheel"
+            android:rotation="160"
+            android:src="@drawable/arrow_wheel_second"
+            app:layout_constraintBottom_toBottomOf="@+id/wheel"
+            app:layout_constraintEnd_toEndOf="@+id/wheel"
+            app:layout_constraintStart_toStartOf="@+id/wheel"
+            app:layout_constraintTop_toTopOf="@+id/wheel" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/stake_bar_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginBottom="30dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageView
+            android:id="@+id/btn_set_stake_first"
+            android:layout_width="100dp"
+            android:layout_height="70dp"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/btn_first_set_stake"
+            android:clickable="true"
+            android:contentDescription="@string/btn_first_set_stake"
+            android:focusable="true"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/btn_set_stake_second"
+            android:layout_width="100dp"
+            android:layout_height="70dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:background="@drawable/btn_second_set_stake"
+            android:clickable="true"
+            android:contentDescription="@string/btn_second_set_stake"
+            android:focusable="true"
+            app:layout_constraintEnd_toStartOf="@+id/btn_set_stake_three"
+            app:layout_constraintHorizontal_bias="0.523"
+            app:layout_constraintStart_toEndOf="@+id/btn_set_stake_first"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/btn_set_stake_three"
+            android:layout_width="100dp"
+            android:layout_height="70dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/btn_three_set_stake"
+            android:clickable="true"
+            android:contentDescription="@string/btn_three_set_stake"
+            android:focusable="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/btn_set_stake_four"
+            android:layout_width="100dp"
+            android:layout_height="70dp"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/btn_four_set_stake"
+            android:clickable="true"
+            android:contentDescription="@string/btn_four_set_stake"
+            android:focusable="true"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_set_stake_first" />
+
+        <ImageView
+            android:id="@+id/btn_set_stake_fife"
+            android:layout_width="100dp"
+            android:layout_height="70dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:background="@drawable/btn_fife_set_stake"
+            android:clickable="true"
+            android:contentDescription="@string/btn_fife_set_stake"
+            android:focusable="true"
+            app:layout_constraintEnd_toStartOf="@+id/btn_set_stake_six"
+            app:layout_constraintStart_toEndOf="@+id/btn_set_stake_four"
+            app:layout_constraintTop_toBottomOf="@+id/btn_set_stake_second" />
+
+        <ImageView
+            android:id="@+id/btn_set_stake_six"
+            android:layout_width="100dp"
+            android:layout_height="70dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="10dp"
+            android:clickable="true"
+            android:contentDescription="@string/btn_six_set_stake"
+            android:focusable="true"
+            android:src="@drawable/btn_six_set_stake"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_set_stake_three" />
+
+        <ImageView
+            android:id="@+id/btn_spin"
+            android:layout_width="230dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="20dp"
+            android:clickable="true"
+            android:contentDescription="@string/btn_spin"
+            android:focusable="true"
+            android:src="@drawable/btn_spin"
+            app:layout_constraintEnd_toEndOf="@+id/btn_set_stake_six"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_set_stake_fife" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
