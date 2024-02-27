@@ -46,4 +46,5 @@
     <string name="btn_four_set_stake">btn_four_set_stake</string>
     <string name="btn_fife_set_stake">btn_fife_set_stake</string>
     <string name="btn_six_set_stake">btn_six_set_stake</string>
+    <string name="btn_slots_first">btn_slots_first</string>
 </resources>
