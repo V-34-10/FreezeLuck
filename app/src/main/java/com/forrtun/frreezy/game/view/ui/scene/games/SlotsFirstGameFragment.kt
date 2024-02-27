@@ -13,6 +13,7 @@ import com.forrtun.frreezy.game.R
 import com.forrtun.frreezy.game.databinding.FragmentSlotsFirstGameBinding
 import com.forrtun.frreezy.game.model.Slot
 import com.forrtun.frreezy.game.view.adapter.RecyclerSlotAdapter
+import com.forrtun.frreezy.game.view.adapter.VerticalSpaceItemDecoration
 import com.forrtun.frreezy.game.view.manager.ManagerStatusStake
 import com.forrtun.frreezy.game.view.manager.UpdateStatusStake.constructor
 import com.forrtun.frreezy.game.view.manager.UpdateStatusStake.convertStringToNumber
@@ -34,18 +35,16 @@ class SlotsFirstGameFragment : Fragment() {
         R.drawable.ic_slot_4a,
         R.drawable.ic_slot_2a,
         R.drawable.ic_slot_5a,
-        R.drawable.ic_slot_5a,
         R.drawable.ic_slot_1a,
         R.drawable.ic_slot_6a,
         R.drawable.ic_slot_3a,
         R.drawable.ic_slot_6a,
         R.drawable.ic_slot_2a,
         R.drawable.ic_slot_5a,
-        R.drawable.ic_slot_2a
+        R.drawable.ic_slot_2a,
     )
     private lateinit var slotList: List<Slot>
     private lateinit var slotAdapter: RecyclerSlotAdapter
-    private val slotSize = slotAdapter.itemCount
     private var animationStart = false
     private var defaultBalance = 10000
     private lateinit var managerStatusStake: ManagerStatusStake
@@ -164,6 +163,7 @@ class SlotsFirstGameFragment : Fragment() {
     }
 
     private fun lockAnimation() {
+        val slotSize = slotAdapter.itemCount
         for (i in 0 until slotSize) {
             val holder =
                 binding.sceneSlots.findViewHolderForAdapterPosition(i) as? RecyclerSlotAdapter.SlotViewHolder
@@ -173,6 +173,9 @@ class SlotsFirstGameFragment : Fragment() {
 
     private fun setSlotRecycler() {
         slotList = originalSlotMutableList.map { Slot(it) }
+        val verticalSpacing = resources.getDimensionPixelSize(R.dimen.vertical_spacing)
+        val itemDecoration = VerticalSpaceItemDecoration(verticalSpacing)
+        binding.sceneSlots.addItemDecoration(itemDecoration)
         slotAdapter = RecyclerSlotAdapter(slotList)
         binding.sceneSlots.apply {
             layoutManager = GridLayoutManager(context, 4)
