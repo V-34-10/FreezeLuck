@@ -57,9 +57,9 @@
 
         <ImageView
             android:id="@+id/btn_game_first"
-            android:layout_width="185dp"
-            android:layout_height="165dp"
-            android:layout_margin="@dimen/dp15"
+            android:layout_width="175dp"
+            android:layout_height="155dp"
+            android:layout_marginStart="@dimen/dp15"
             android:background="@drawable/btn_game_first"
             android:clickable="true"
             android:contentDescription="@string/btn_game_first"
@@ -69,9 +69,9 @@
 
         <ImageView
             android:id="@+id/btn_game_second"
-            android:layout_width="185dp"
-            android:layout_height="165dp"
-            android:layout_margin="@dimen/dp15"
+            android:layout_width="175dp"
+            android:layout_height="155dp"
+            android:layout_marginEnd="@dimen/dp15"
             android:background="@drawable/btn_game_second"
             android:clickable="true"
             android:contentDescription="@string/btn_game_second"
@@ -81,9 +81,10 @@
 
         <ImageView
             android:id="@+id/btn_game_three"
-            android:layout_width="185dp"
-            android:layout_height="165dp"
-            android:layout_margin="@dimen/dp15"
+            android:layout_width="175dp"
+            android:layout_height="155dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="@dimen/dp15"
             android:background="@drawable/btn_game_three"
             android:clickable="true"
             android:contentDescription="@string/btn_game_three"
@@ -93,9 +94,10 @@
 
         <ImageView
             android:id="@+id/btn_game_four"
-            android:layout_width="185dp"
-            android:layout_height="165dp"
-            android:layout_margin="@dimen/dp15"
+            android:layout_width="175dp"
+            android:layout_height="155dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="@dimen/dp15"
             android:background="@drawable/btn_game_four"
             android:clickable="true"
             android:contentDescription="@string/btn_game_four"
@@ -105,22 +107,23 @@
 
         <ImageView
             android:id="@+id/btn_game_fife"
-            android:layout_width="185dp"
-            android:layout_height="165dp"
-            android:layout_margin="@dimen/dp15"
+            android:layout_width="175dp"
+            android:layout_height="155dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="@dimen/dp15"
             android:background="@drawable/btn_game_fife"
             android:clickable="true"
             android:contentDescription="@string/btn_game_fife"
             android:focusable="true"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btn_game_four" />
-
+            app:layout_constraintTop_toBottomOf="@+id/btn_game_three" />
 
         <ImageView
             android:id="@+id/btn_game_six"
-            android:layout_width="185dp"
-            android:layout_height="165dp"
-            android:layout_margin="@dimen/dp15"
+            android:layout_width="175dp"
+            android:layout_height="155dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="@dimen/dp15"
             android:background="@drawable/btn_game_six"
             android:clickable="true"
             android:contentDescription="@string/btn_game_six"
@@ -130,9 +133,10 @@
 
         <ImageView
             android:id="@+id/btn_game_seven"
-            android:layout_width="185dp"
-            android:layout_height="165dp"
-            android:layout_margin="@dimen/dp15"
+            android:layout_width="175dp"
+            android:layout_height="155dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="@dimen/dp15"
             android:background="@drawable/btn_game_seven"
             android:clickable="true"
             android:contentDescription="@string/btn_game_seven"
@@ -142,9 +146,10 @@
 
         <ImageView
             android:id="@+id/btn_game_eight"
-            android:layout_width="185dp"
-            android:layout_height="165dp"
-            android:layout_margin="@dimen/dp15"
+            android:layout_width="175dp"
+            android:layout_height="155dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="@dimen/dp15"
             android:background="@drawable/btn_game_eight"
             android:clickable="true"
             android:contentDescription="@string/btn_game_eight"

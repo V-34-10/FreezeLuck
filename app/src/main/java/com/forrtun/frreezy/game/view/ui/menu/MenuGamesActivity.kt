@@ -16,11 +16,12 @@ import com.forrtun.frreezy.game.utils.FullScreen.setFullScreen
 
 class MenuGamesActivity : AppCompatActivity() {
 
-    private val binding by lazy { ActivityMenuGamesBinding.inflate(layoutInflater) }
+    private lateinit var binding: ActivityMenuGamesBinding
     private lateinit var listGames: List<String>
     private lateinit var listButtonName: List<ImageView>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        binding = ActivityMenuGamesBinding.inflate(layoutInflater)
         setContentView(binding.root)
         listGames = listOf(
             getString(R.string.title_game_first),
@@ -40,7 +41,7 @@ class MenuGamesActivity : AppCompatActivity() {
         buttonsRunGame()
     }
 
-    private fun runDialogLose() {
+    private fun runDialog() {
         val animationClick = AnimationUtils.loadAnimation(this, R.anim.button_animation)
         val dialog = Dialog(this)
         dialog.requestWindowFeature(android.view.Window.FEATURE_NO_TITLE)
@@ -70,7 +71,7 @@ class MenuGamesActivity : AppCompatActivity() {
             finish()
         }
         binding.btnExit.setOnClickListener {
-            binding.btnSettings.startAnimation(animationClick)
+            binding.btnExit.startAnimation(animationClick)
             finishAffinity()
         }
     }

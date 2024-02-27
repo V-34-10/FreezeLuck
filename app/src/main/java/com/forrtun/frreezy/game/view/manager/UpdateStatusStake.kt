@@ -1,5 +1,6 @@
 package com.forrtun.frreezy.game.view.manager
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
@@ -20,23 +21,24 @@ object UpdateStatusStake {
 
     fun convertStringToNumber(text: String): Int = text.replace(Regex("\\D"), "").toIntOrNull() ?: 0
 
+    @SuppressLint("SetTextI18n")
     fun setStatusStakeUI(binding: ViewBinding, stake: ManagerStatusStake) {
         val defaultStake = stake.getDefaultBet()
         when (binding) {
             is FragmentSlotsFirstGameBinding -> {
-                binding.textBet.text = defaultStake.toString()
+                binding.textBet.text = "BET\n$defaultStake"
                 binding.btnMinus.isEnabled = stake.isMinusBet()
                 binding.btnPlus.isEnabled = stake.isPlusBet()
             }
 
             is FragmentMinerSecondGameBinding -> {
-                binding.textBet.text = defaultStake.toString()
+                binding.textBet.text = "BET\n$defaultStake"
                 binding.btnMinus.isEnabled = stake.isMinusBet()
                 binding.btnPlus.isEnabled = stake.isPlusBet()
             }
 
             is FragmentWheelThreeGameBinding -> {
-                binding.textBet.text = defaultStake.toString()
+                binding.textBet.text = "BET\n$defaultStake"
             }
         }
     }
