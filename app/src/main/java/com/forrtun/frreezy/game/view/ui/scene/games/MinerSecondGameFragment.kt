@@ -125,22 +125,6 @@ class MinerSecondGameFragment : Fragment(), SlotClickListener {
             win += newSumWin
             binding.textWin.text = "WIN\n$win"
         }
-        /*slotList = slotMinerAdapter.getSlotList()
-        val winCoefficient = getWinCoefficient(slotList)
-
-        if (winCoefficient.toInt() == 0) {
-            balance -= bid
-            if (balance < 0) {
-                balance = 0
-            }
-            binding.textBalance.text = "Total\n$balance"
-        } else {
-            val newSumWin = bid * winCoefficient.toInt()
-            balance += newSumWin
-            binding.textBalance.text = "Total\n$balance"
-            win += newSumWin
-            binding.textWin.text = "WIN\n$win"
-        }*/
         activity?.let { it1 ->
             setStatusStake(
                 it1,
