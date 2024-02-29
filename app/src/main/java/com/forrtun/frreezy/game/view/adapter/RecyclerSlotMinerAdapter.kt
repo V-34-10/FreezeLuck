@@ -21,20 +21,29 @@ class RecyclerSlotMinerAdapter(
     private var imgSlot: Int = 0
 
     init {
-        slotMutableList = mutableListOf(
-            R.drawable.ic_slot_4b,
-            R.drawable.ic_slot_5b,
-            R.drawable.ic_slot_1b,
-            R.drawable.ic_slot_3b,
-            R.drawable.ic_slot_2b,
-            R.drawable.ic_slot_3b,
-            R.drawable.ic_slot_4b,
-            R.drawable.ic_slot_1b,
-            R.drawable.ic_slot_1b,
-            R.drawable.ic_slot_1b,
-            R.drawable.ic_slot_6b,
-            R.drawable.ic_slot_3b
-        )
+        if (maxOpenSlot == 5) {
+            slotMutableList = mutableListOf(
+                R.drawable.ic_slot_4b,
+                R.drawable.ic_slot_5b,
+                R.drawable.ic_slot_1b,
+                R.drawable.ic_slot_3b,
+                R.drawable.ic_slot_2b,
+                R.drawable.ic_slot_3b,
+                R.drawable.ic_slot_4b,
+                R.drawable.ic_slot_1b,
+                R.drawable.ic_slot_1b,
+                R.drawable.ic_slot_1b,
+                R.drawable.ic_slot_6b,
+                R.drawable.ic_slot_3b
+            )
+        } else {
+            slotMutableList = mutableListOf(
+                R.drawable.ic_slot_1c,
+                R.drawable.ic_slot_2c,
+                R.drawable.ic_slot_3c,
+                R.drawable.ic_slot_4c
+            )
+        }
         imageSlot = R.layout.item_slot_miner
         imgSlot = R.id.imageRecyclerSlotMiner
     }
