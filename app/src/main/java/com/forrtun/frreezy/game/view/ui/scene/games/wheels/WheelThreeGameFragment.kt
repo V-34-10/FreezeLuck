@@ -9,10 +9,11 @@ import android.view.animation.AnimationUtils
 import androidx.fragment.app.Fragment
 import com.forrtun.frreezy.game.R
 import com.forrtun.frreezy.game.databinding.FragmentWheelThreeGameBinding
-import com.forrtun.frreezy.game.view.ui.scene.games.wheels.helpers.FragmentWheelThreeGameBindingImpl
 import com.forrtun.frreezy.game.view.manager.UpdateStatusStake.convertStringToNumber
 import com.forrtun.frreezy.game.view.manager.UpdateStatusStake.getStatusStake
 import com.forrtun.frreezy.game.view.manager.UpdateStatusStake.isTotalSave
+import com.forrtun.frreezy.game.view.ui.dialog.StatusDialog.runDialog
+import com.forrtun.frreezy.game.view.ui.scene.games.wheels.helpers.FragmentWheelThreeGameBindingImpl
 import com.forrtun.frreezy.game.view.ui.scene.games.wheels.helpers.WheelHelper
 
 class WheelThreeGameFragment : Fragment() {
@@ -61,7 +62,21 @@ class WheelThreeGameFragment : Fragment() {
         binding.btnBack.setOnClickListener {
             animation = AnimationUtils.loadAnimation(context, R.anim.button_animation)
             it.startAnimation(animation)
-            activity?.onBackPressed()
+            if (convertStringToNumber(binding.textWin.text.toString()) == 0) {
+                activity?.let { it1 ->
+                    runDialog(
+                        convertStringToNumber(binding.textWin.text.toString()),
+                        it1, R.layout.dialog_lose
+                    )
+                }
+            } else {
+                activity?.let { it1 ->
+                    runDialog(
+                        convertStringToNumber(binding.textWin.text.toString()),
+                        it1, R.layout.dialog_win
+                    )
+                }
+            }
         }
     }
 }

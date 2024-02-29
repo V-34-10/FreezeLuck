@@ -12,6 +12,7 @@ import com.forrtun.frreezy.game.databinding.FragmentWheelFourGameBinding
 import com.forrtun.frreezy.game.view.manager.UpdateStatusStake.convertStringToNumber
 import com.forrtun.frreezy.game.view.manager.UpdateStatusStake.getStatusStake
 import com.forrtun.frreezy.game.view.manager.UpdateStatusStake.isTotalSave
+import com.forrtun.frreezy.game.view.ui.dialog.StatusDialog.runDialog
 import com.forrtun.frreezy.game.view.ui.scene.games.wheels.helpers.FragmentWheelFourGameBindingImpl
 import com.forrtun.frreezy.game.view.ui.scene.games.wheels.helpers.WheelHelper
 
@@ -76,7 +77,21 @@ class WheelFourGameFragment : Fragment() {
         binding.btnBack.setOnClickListener {
             animation = AnimationUtils.loadAnimation(context, R.anim.button_animation)
             it.startAnimation(animation)
-            activity?.onBackPressed()
+            if (convertStringToNumber(binding.textWin.text.toString()) == 0) {
+                activity?.let { it1 ->
+                    runDialog(
+                        convertStringToNumber(binding.textWin.text.toString()),
+                        it1, R.layout.dialog_lose
+                    )
+                }
+            } else {
+                activity?.let { it1 ->
+                    runDialog(
+                        convertStringToNumber(binding.textWin.text.toString()),
+                        it1, R.layout.dialog_win
+                    )
+                }
+            }
         }
     }
 }
