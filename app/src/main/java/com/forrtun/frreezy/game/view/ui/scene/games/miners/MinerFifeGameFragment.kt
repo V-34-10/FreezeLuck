@@ -1,4 +1,4 @@
-package com.forrtun.frreezy.game.view.ui.scene.games
+package com.forrtun.frreezy.game.view.ui.scene.games.miners
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

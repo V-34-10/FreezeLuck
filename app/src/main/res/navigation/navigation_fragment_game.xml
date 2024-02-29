@@ -13,25 +13,25 @@
 
     <fragment
         android:id="@+id/game_miner_second"
-        android:name="com.forrtun.frreezy.game.view.ui.scene.games.MinerSecondGameFragment"
+        android:name="com.forrtun.frreezy.game.view.ui.scene.games.miners.MinerSecondGameFragment"
         android:label="@string/title_game_second"
         tools:layout="@layout/fragment_miner_second_game" />
 
     <fragment
         android:id="@+id/game_wheel_three"
-        android:name="com.forrtun.frreezy.game.view.ui.scene.games.WheelThreeGameFragment"
+        android:name="com.forrtun.frreezy.game.view.ui.scene.games.wheels.WheelThreeGameFragment"
         android:label="@string/title_game_three"
         tools:layout="@layout/fragment_wheel_three_game" />
 
     <fragment
         android:id="@+id/game_wheel_four"
-        android:name="com.forrtun.frreezy.game.view.ui.scene.games.WheelFourGameFragment"
+        android:name="com.forrtun.frreezy.game.view.ui.scene.games.wheels.WheelFourGameFragment"
         android:label="@string/title_game_four"
         tools:layout="@layout/fragment_wheel_four_game" />
 
     <fragment
         android:id="@+id/game_miner_fife"
-        android:name="com.forrtun.frreezy.game.view.ui.scene.games.MinerFifeGameFragment"
+        android:name="com.forrtun.frreezy.game.view.ui.scene.games.miners.MinerFifeGameFragment"
         android:label="@string/title_game_fife"
         tools:layout="@layout/fragment_miner_fife_game" />
 

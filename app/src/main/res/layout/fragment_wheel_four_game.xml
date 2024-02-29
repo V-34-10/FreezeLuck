@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background_four_wheel_game"
-    tools:context=".view.ui.scene.games.WheelFourGameFragment">
+    tools:context=".view.ui.scene.games.wheels.WheelFourGameFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/control_game"

@@ -1,4 +1,4 @@
-package com.forrtun.frreezy.game.view.ui.scene.games
+package com.forrtun.frreezy.game.view.ui.scene.games.miners
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -14,7 +14,6 @@ import com.forrtun.frreezy.game.model.Slot
 import com.forrtun.frreezy.game.view.adapter.RecyclerSlotMinerAdapter
 import com.forrtun.frreezy.game.view.adapter.SlotClickListener
 import com.forrtun.frreezy.game.view.manager.ManagerStatusStake
-import com.forrtun.frreezy.game.view.manager.UpdateStatusStake
 import com.forrtun.frreezy.game.view.manager.UpdateStatusStake.constructor
 import com.forrtun.frreezy.game.view.manager.UpdateStatusStake.convertStringToNumber
 import com.forrtun.frreezy.game.view.manager.UpdateStatusStake.getStatusStake

@@ -1,4 +1,4 @@
-package com.forrtun.frreezy.game.view.ui.scene.games
+package com.forrtun.frreezy.game.view.ui.scene.games.wheels
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -9,11 +9,11 @@ import android.view.animation.AnimationUtils
 import androidx.fragment.app.Fragment
 import com.forrtun.frreezy.game.R
 import com.forrtun.frreezy.game.databinding.FragmentWheelThreeGameBinding
-import com.forrtun.frreezy.game.view.manager.FragmentWheelThreeGameBindingImpl
+import com.forrtun.frreezy.game.view.ui.scene.games.wheels.helpers.FragmentWheelThreeGameBindingImpl
 import com.forrtun.frreezy.game.view.manager.UpdateStatusStake.convertStringToNumber
 import com.forrtun.frreezy.game.view.manager.UpdateStatusStake.getStatusStake
 import com.forrtun.frreezy.game.view.manager.UpdateStatusStake.isTotalSave
-import com.forrtun.frreezy.game.view.manager.WheelHelper
+import com.forrtun.frreezy.game.view.ui.scene.games.wheels.helpers.WheelHelper
 
 class WheelThreeGameFragment : Fragment() {
 

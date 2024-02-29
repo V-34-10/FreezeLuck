@@ -1,4 +1,4 @@
-package com.forrtun.frreezy.game.view.manager
+package com.forrtun.frreezy.game.view.ui.scene.games.wheels.helpers
 
 import android.widget.ImageView
 import android.widget.TextView
