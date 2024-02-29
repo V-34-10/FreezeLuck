@@ -2,12 +2,12 @@ package com.forrtun.frreezy.game.view.ui.scene.games
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.forrtun.frreezy.game.R
 import com.forrtun.frreezy.game.databinding.FragmentSlotsFirstGameBinding
@@ -21,6 +21,7 @@ import com.forrtun.frreezy.game.view.manager.UpdateStatusStake.getStatusStake
 import com.forrtun.frreezy.game.view.manager.UpdateStatusStake.isTotalSave
 import com.forrtun.frreezy.game.view.manager.UpdateStatusStake.setStatusStake
 import com.forrtun.frreezy.game.view.manager.UpdateStatusStake.setStatusStakeUI
+import com.forrtun.frreezy.game.view.ui.dialog.StatusDialog.runDialog
 
 class SlotsFirstGameFragment : Fragment() {
 
@@ -115,7 +116,21 @@ class SlotsFirstGameFragment : Fragment() {
         binding.btnBack.setOnClickListener {
             animation = AnimationUtils.loadAnimation(context, R.anim.button_animation)
             it.startAnimation(animation)
-            activity?.onBackPressed()
+            if (convertStringToNumber(binding.textWin.text.toString()) == 0) {
+                activity?.let { it1 ->
+                    runDialog(
+                        convertStringToNumber(binding.textWin.text.toString()),
+                        it1, R.layout.dialog_lose
+                    )
+                }
+            } else {
+                activity?.let { it1 ->
+                    runDialog(
+                        convertStringToNumber(binding.textWin.text.toString()),
+                        it1, R.layout.dialog_win
+                    )
+                }
+            }
         }
     }
 

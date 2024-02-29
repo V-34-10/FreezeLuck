@@ -1,18 +1,15 @@
 package com.forrtun.frreezy.game.view.ui.menu
 
-import android.app.Dialog
 import android.content.Intent
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import com.forrtun.frreezy.game.R
 import com.forrtun.frreezy.game.databinding.ActivityMenuGamesBinding
+import com.forrtun.frreezy.game.utils.FullScreen.setFullScreen
 import com.forrtun.frreezy.game.view.ui.scene.SceneActivity
 import com.forrtun.frreezy.game.view.ui.settings.SettingsActivity
-import com.forrtun.frreezy.game.utils.FullScreen.setFullScreen
 
 class MenuGamesActivity : AppCompatActivity() {
 
@@ -39,16 +36,6 @@ class MenuGamesActivity : AppCompatActivity() {
         )
         setFullScreen(this)
         buttonsRunGame()
-    }
-
-    private fun runDialog() {
-        val animationClick = AnimationUtils.loadAnimation(this, R.anim.button_animation)
-        val dialog = Dialog(this)
-        dialog.requestWindowFeature(android.view.Window.FEATURE_NO_TITLE)
-        dialog.setContentView(R.layout.dialog_lose)
-        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        dialog.setCanceledOnTouchOutside(false)
-        dialog.show()
     }
 
     private fun buttonsRunGame() {
