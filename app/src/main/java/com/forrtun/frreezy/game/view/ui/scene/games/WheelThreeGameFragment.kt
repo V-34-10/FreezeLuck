@@ -20,7 +20,9 @@ import java.util.Random
 class WheelThreeGameFragment : Fragment() {
 
     private lateinit var binding: FragmentWheelThreeGameBinding
-
+    private val minAngleRotate = 0f
+    private val maxAngleRotate = 720f
+    private var currentAngle = 0f
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -59,9 +61,6 @@ class WheelThreeGameFragment : Fragment() {
     }
 
     private fun animRotateWheel() {
-        val minAngleRotate = 0f
-        val maxAngleRotate = 720f
-        var currentAngle = 0f
         val randomAngleRotate =
             minAngleRotate + Random().nextFloat() * (maxAngleRotate - minAngleRotate)
         val rotationAnimation = RotateAnimation(
