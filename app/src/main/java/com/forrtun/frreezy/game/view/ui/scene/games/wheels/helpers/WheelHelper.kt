@@ -7,6 +7,7 @@ import android.view.animation.RotateAnimation
 import com.forrtun.frreezy.game.view.manager.UpdateStatusStake.convertStringToNumber
 import com.forrtun.frreezy.game.view.manager.UpdateStatusStake.setStatusStake
 import java.util.Random
+import kotlin.math.roundToInt
 
 object WheelHelper {
     private var currentAngle = 0f
@@ -64,20 +65,46 @@ object WheelHelper {
         }
     }
 
+    private fun getWinSecondCoefficient(angleRotate: Float): Float {
+        return when (convertAngleToDegree(angleRotate)) {
+            in 0f..36f -> 1.5f // 1.5x
+            in 36f..72f -> 1.0f // 1x
+            in 72f..108f -> 3.0f // 3x
+            in 108f..144f -> 5.0f // 5x
+            in 144f..180f -> 1.5f // 1.5x
+            in 180f..216f -> 0.0f // 0x
+            in 216f..252f -> 1.5f // 1.5x
+            in 252f..288f -> 5.0f // 5x
+            in 288f..324f -> 3.0f // 3x
+            in 324f..360f -> 1.0f // 1x
+            else -> {
+                return 1.0f
+            }
+        }
+    }
+
     @SuppressLint("SetTextI18n")
     private fun updateStatusBalance(angle: Float, binding: GameBinding, activity: Activity) {
-        val bid = convertStringToNumber(binding.textBet.text.toString())
+        val bet = convertStringToNumber(binding.textBet.text.toString())
         var win = convertStringToNumber(binding.textWin.text.toString())
         var balance = convertStringToNumber(binding.textBalance.text.toString())
 
-        if (getWinCoefficient(angle) == 0) {
-            balance -= bid
+        val coefficient = when (binding) {
+            is FragmentWheelFourGameBindingImpl -> getWinCoefficient(angle)
+            is FragmentWheelThreeGameBindingImpl -> getWinSecondCoefficient(angle)
+            else -> {
+                0.0f
+            }
+        }
+
+        if (coefficient.toInt() == 0) {
+            balance -= bet
             if (balance < 0) {
                 balance = 0
             }
             binding.textBalance.text = "Total\n$balance"
         } else {
-            val newSumWin = bid * getWinCoefficient(angle)
+            val newSumWin = (bet.toFloat() * coefficient.toFloat()).roundToInt()
             balance += newSumWin
             binding.textBalance.text = "Total\n$balance"
             win += newSumWin
@@ -86,7 +113,7 @@ object WheelHelper {
         setStatusStake(
             activity,
             "Total\n$balance",
-            bid.toString(),
+            bet.toString(),
             "WIN\n$win"
         )
     }
