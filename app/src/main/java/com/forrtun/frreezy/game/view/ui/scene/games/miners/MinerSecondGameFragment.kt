@@ -13,6 +13,7 @@ import com.forrtun.frreezy.game.databinding.FragmentMinerSecondGameBinding
 import com.forrtun.frreezy.game.model.Slot
 import com.forrtun.frreezy.game.view.adapter.RecyclerSlotMinerAdapter
 import com.forrtun.frreezy.game.view.adapter.SlotClickListener
+import com.forrtun.frreezy.game.view.manager.BackgroundMusicManager
 import com.forrtun.frreezy.game.view.manager.ManagerStatusStake
 import com.forrtun.frreezy.game.view.manager.UpdateStatusStake.constructor
 import com.forrtun.frreezy.game.view.manager.UpdateStatusStake.convertStringToNumber
@@ -30,6 +31,7 @@ class MinerSecondGameFragment : Fragment(), SlotClickListener {
     private lateinit var slotMinerAdapter: RecyclerSlotMinerAdapter
     private var defaultBalance = 10000
     private lateinit var managerStatusStake: ManagerStatusStake
+    private lateinit var backgroundMusic: BackgroundMusicManager
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -38,7 +40,25 @@ class MinerSecondGameFragment : Fragment(), SlotClickListener {
         managerStatusStake =
             constructor(convertStringToNumber(binding.textBalance.text.toString()))
         setStatusStakeUI(binding, managerStatusStake)
+
+        backgroundMusic = BackgroundMusicManager(requireContext())
+        backgroundMusic.apply {
+            loadBackgroundMusic(requireContext(), "backgroundMusic", R.raw.kazino_zvuk)
+            startMusic("backgroundMusic", true)
+        }
+
         return binding.root
+    }
+
+    @SuppressLint("SourceLockedOrientationActivity")
+    override fun onResume() {
+        super.onResume()
+        backgroundMusic.resumeMusic()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        backgroundMusic.pauseMusic()
     }
 
     @SuppressLint("SetTextI18n")
@@ -147,5 +167,10 @@ class MinerSecondGameFragment : Fragment(), SlotClickListener {
                 "WIN\n$win"
             )
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        backgroundMusic.releaseMusicPlayer()
     }
 }

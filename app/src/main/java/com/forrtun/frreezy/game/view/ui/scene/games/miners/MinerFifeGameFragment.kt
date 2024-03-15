@@ -13,6 +13,7 @@ import com.forrtun.frreezy.game.databinding.FragmentMinerFifeGameBinding
 import com.forrtun.frreezy.game.model.Slot
 import com.forrtun.frreezy.game.view.adapter.RecyclerSlotMinerAdapter
 import com.forrtun.frreezy.game.view.adapter.SlotClickListener
+import com.forrtun.frreezy.game.view.manager.BackgroundMusicManager
 import com.forrtun.frreezy.game.view.manager.UpdateStatusStake
 import com.forrtun.frreezy.game.view.manager.UpdateStatusStake.convertStringToNumber
 import com.forrtun.frreezy.game.view.manager.UpdateStatusStake.getStatusStake
@@ -26,13 +27,32 @@ class MinerFifeGameFragment : Fragment(), SlotClickListener {
     private lateinit var slotList: List<Slot>
     private lateinit var slotMinerAdapter: RecyclerSlotMinerAdapter
     private var defaultBalance = 10000
+    private lateinit var backgroundMusic: BackgroundMusicManager
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentMinerFifeGameBinding.inflate(layoutInflater, container, false)
+
+        backgroundMusic = BackgroundMusicManager(requireContext())
+        backgroundMusic.apply {
+            loadBackgroundMusic(requireContext(), "backgroundMusic", R.raw.kazino_zvuk)
+            startMusic("backgroundMusic", true)
+        }
+
         return binding.root
+    }
+
+    @SuppressLint("SourceLockedOrientationActivity")
+    override fun onResume() {
+        super.onResume()
+        backgroundMusic.resumeMusic()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        backgroundMusic.pauseMusic()
     }
 
     @SuppressLint("SetTextI18n")
@@ -143,5 +163,10 @@ class MinerFifeGameFragment : Fragment(), SlotClickListener {
                 "WIN\n$win"
             )
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        backgroundMusic.releaseMusicPlayer()
     }
 }

@@ -9,6 +9,7 @@ import android.view.animation.AnimationUtils
 import androidx.fragment.app.Fragment
 import com.forrtun.frreezy.game.R
 import com.forrtun.frreezy.game.databinding.FragmentWheelFourGameBinding
+import com.forrtun.frreezy.game.view.manager.BackgroundMusicManager
 import com.forrtun.frreezy.game.view.manager.UpdateStatusStake.convertStringToNumber
 import com.forrtun.frreezy.game.view.manager.UpdateStatusStake.getStatusStake
 import com.forrtun.frreezy.game.view.manager.UpdateStatusStake.isTotalSave
@@ -20,13 +21,31 @@ class WheelFourGameFragment : Fragment() {
     private lateinit var binding: FragmentWheelFourGameBinding
     private val minAngleRotate = 10f
     private val maxAngleRotate = 720f
-
+    private lateinit var backgroundMusic: BackgroundMusicManager
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentWheelFourGameBinding.inflate(layoutInflater, container, false)
+
+        backgroundMusic = BackgroundMusicManager(requireContext())
+        backgroundMusic.apply {
+            loadBackgroundMusic(requireContext(), "backgroundMusic", R.raw.kazino_zvuk)
+            startMusic("backgroundMusic", true)
+        }
+
         return binding.root
+    }
+
+    @SuppressLint("SourceLockedOrientationActivity")
+    override fun onResume() {
+        super.onResume()
+        backgroundMusic.resumeMusic()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        backgroundMusic.pauseMusic()
     }
 
     @SuppressLint("SetTextI18n")
@@ -93,5 +112,10 @@ class WheelFourGameFragment : Fragment() {
                 }
             }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        backgroundMusic.releaseMusicPlayer()
     }
 }
