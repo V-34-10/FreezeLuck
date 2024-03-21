@@ -4,46 +4,81 @@ import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.SharedPreferences
+import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.util.DisplayMetrics
+import android.view.View
+import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
+import com.forrtun.frreezy.game.R
 import com.forrtun.frreezy.game.databinding.ActivityMainBinding
+import com.forrtun.frreezy.game.utils.FullScreen.setFullScreen
 import com.forrtun.frreezy.game.view.ui.menu.MenuActivity
 import com.forrtun.frreezy.game.view.ui.privacy.PrivacyActivity
-import com.forrtun.frreezy.game.utils.FullScreen.setFullScreen
+import okhttp3.Call
+import okhttp3.Callback
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.Response
+import org.json.JSONException
+import org.json.JSONObject
+import java.io.IOException
 
 @SuppressLint("CustomSplashScreen")
 class SplashActivity : AppCompatActivity() {
 
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
     private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var startIntent: Intent
+    private lateinit var cookies: String
+    private lateinit var userAgent: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         setFullScreen(this)
         runPrivacyActivity()
+        sharedPreferences = getSharedPreferences("FortuneFreezyPref", MODE_PRIVATE)
     }
 
     private fun runPrivacyActivity() {
         saveStatusPrivacy()
         val flagPrivacy = sharedPreferences.getBoolean("statusPrivacy", false)
-        var startIntent: Intent
 
         animationProgressBar()
 
         Handler().postDelayed({
-            if (!flagPrivacy) {
-                startIntent = Intent(this@SplashActivity, PrivacyActivity::class.java)
-                startActivity(startIntent)
-                val editor = sharedPreferences.edit()
-                editor.putBoolean("statusPrivacy", true)
-                editor.apply()
+            val hasUserData =
+                sharedPreferences.contains("cookies") && sharedPreferences.contains("userAgent")
+
+            if (hasUserData) {
+                val cookies = sharedPreferences.getString("cookies", "")
+                val userAgent = sharedPreferences.getString("userAgent", "")
+                val actionUrl = sharedPreferences.getString("actionUrl", "")
+                val sourceUrl = sharedPreferences.getString("sourceUrl", "")
+
+                loadImage(sourceUrl.toString(), actionUrl.toString(), cookies, userAgent)
             } else {
-                startIntent = Intent(this@SplashActivity, MenuActivity::class.java)
-                startActivity(startIntent)
+                fetchInterstitialData()
             }
-            finish()
+
+            if (!flagPrivacy) {
+
+                if (!hasUserData) {
+                    fetchInterstitialData()
+                } else {
+                    startIntent = Intent(this@SplashActivity, PrivacyActivity::class.java)
+                    startActivity(startIntent)
+                    val editor = sharedPreferences.edit()
+                    editor.putBoolean("statusPrivacy", true)
+                    editor.apply()
+                    finish()
+                }
+                onCloseVisibilityBannerClick()
+            }
+
+            onCloseBannerClick()
         }, 3 * 1000.toLong())
     }
 
@@ -70,6 +105,124 @@ class SplashActivity : AppCompatActivity() {
         val editor = sharedPreferences.edit()
         editor.putBoolean("statusPrivacy", flagPrivacy)
         editor.apply()
+    }
+
+    private fun fetchInterstitialData() {
+        val client = OkHttpClient()
+        val request = Request.Builder()
+            .url("https://on.kabushinoko.com/interstitial")
+            .build()
+
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                e.printStackTrace()
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                response.use {
+                    if (!response.isSuccessful) throw IOException("Unexpected code $response")
+
+                    cookies = response.header("Set-Cookie") ?: ""
+                    userAgent = response.header("User-Agent") ?: ""
+
+                    val json = response.body?.string()
+                    json?.let { parseJsonAndOpenLinks(it, cookies, userAgent) }
+                }
+            }
+        })
+    }
+
+    private fun parseJsonAndOpenLinks(json: String, cookies: String?, userAgent: String?) {
+        try {
+            val jsonObject = JSONObject(json)
+            val actionUrl = jsonObject.getString("action")
+            val sourceUrl = jsonObject.getString("source")
+
+            saveLinksAndHeadersToSharedPreferences(actionUrl, sourceUrl, cookies, userAgent)
+
+            loadImage(sourceUrl, actionUrl, cookies, userAgent)
+        } catch (e: JSONException) {
+            e.printStackTrace()
+        }
+    }
+
+    private fun saveLinksAndHeadersToSharedPreferences(
+        actionUrl: String,
+        sourceUrl: String,
+        cookies: String?,
+        userAgent: String?
+    ) {
+        val editor = sharedPreferences.edit()
+        editor.putString("actionUrl", actionUrl)
+        editor.putString("sourceUrl", sourceUrl)
+        editor.putString("cookies", cookies)
+        editor.putString("userAgent", userAgent)
+        editor.apply()
+    }
+
+    private fun loadImage(
+        imageUrl: String,
+        actionUrl: String,
+        cookies: String?,
+        userAgent: String?
+    ) {
+        val client = OkHttpClient()
+        val request = Request.Builder()
+            .url(imageUrl)
+            .header("Cookie", cookies.toString())
+            .header("User-Agent", userAgent.toString())
+            .build()
+
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                e.printStackTrace()
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                response.use {
+                    if (!response.isSuccessful) throw IOException("Unexpected code $response")
+
+                    // get banner and set
+                    val inputStream = response.body?.byteStream()
+                    val bitmap = BitmapFactory.decodeStream(inputStream)
+
+                    runOnUiThread {
+                        binding.sourceBanner.visibility = View.VISIBLE
+                        binding.btnClose.visibility = View.VISIBLE
+                        binding.sourceBanner.setImageBitmap(bitmap)
+                        setClickListenerOnImage(actionUrl)
+                    }
+                }
+            }
+        })
+    }
+
+    private fun setCloseButtonClickListener(closeAction: () -> Unit) {
+        val animation = AnimationUtils.loadAnimation(this, R.anim.button_animation)
+        binding.btnClose.setOnClickListener {
+            it!!.startAnimation(animation)
+            closeAction.invoke()
+        }
+    }
+
+    private fun onCloseVisibilityBannerClick() {
+        setCloseButtonClickListener {
+            binding.sourceBanner.visibility = View.GONE
+            binding.btnClose.visibility = View.GONE
+        }
+    }
+
+    private fun onCloseBannerClick() {
+        setCloseButtonClickListener {
+            startActivity(Intent(this@SplashActivity, MenuActivity::class.java))
+        }
+    }
+
+    private fun setClickListenerOnImage(actionUrl: String) {
+        binding.sourceBanner.setOnClickListener {
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(actionUrl))
+            startActivity(intent)
+        }
     }
 
     @Deprecated("Deprecated in Java")
