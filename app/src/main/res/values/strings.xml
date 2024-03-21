@@ -47,4 +47,6 @@
     <string name="btn_fife_set_stake">btn_fife_set_stake</string>
     <string name="btn_six_set_stake">btn_six_set_stake</string>
     <string name="btn_slots_first">btn_slots_first</string>
+    <string name="sourcebanner">sourceBanner</string>
+    <string name="btnclose">btnClose</string>
 </resources>
