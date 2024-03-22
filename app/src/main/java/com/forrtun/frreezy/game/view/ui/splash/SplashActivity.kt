@@ -2,9 +2,11 @@ package com.forrtun.frreezy.game.view.ui.splash
 
 import android.animation.ValueAnimator
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.BitmapFactory
+import android.net.ConnectivityManager
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
@@ -13,6 +15,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.forrtun.frreezy.game.databinding.ActivityMainBinding
 import com.forrtun.frreezy.game.utils.FullScreen.setFullScreen
+import com.forrtun.frreezy.game.view.ui.menu.MenuActivity
 import com.forrtun.frreezy.game.view.ui.privacy.PrivacyActivity
 import okhttp3.Call
 import okhttp3.Callback
@@ -46,6 +49,18 @@ class SplashActivity : AppCompatActivity() {
         animationProgressBar()
 
         Handler().postDelayed({
+
+            if (!isInternetAvailable()) {
+
+                if (!flagPrivacy) {
+                    startActivity(Intent(this@SplashActivity, PrivacyActivity::class.java))
+                    sharedPreferences.edit().putBoolean("statusPrivacy", true).apply()
+                } else {
+                    startActivity(Intent(this@SplashActivity, MenuActivity::class.java))
+                }
+                finish()
+            }
+
             val hasUserData =
                 sharedPreferences.contains("cookies") && sharedPreferences.contains("userAgent")
 
@@ -60,19 +75,6 @@ class SplashActivity : AppCompatActivity() {
                 fetchInterstitialData()
             }
 
-            if (!flagPrivacy) {
-
-                if (!hasUserData) {
-                    fetchInterstitialData()
-                } else {
-                    startIntent = Intent(this@SplashActivity, PrivacyActivity::class.java)
-                    startActivity(startIntent)
-                    val editor = sharedPreferences.edit()
-                    editor.putBoolean("statusPrivacy", true)
-                    editor.apply()
-                    finish()
-                }
-            }
         }, 3 * 1000.toLong())
     }
 
@@ -99,6 +101,13 @@ class SplashActivity : AppCompatActivity() {
         val editor = sharedPreferences.edit()
         editor.putBoolean("statusPrivacy", flagPrivacy)
         editor.apply()
+    }
+
+    private fun isInternetAvailable(): Boolean {
+        val connectivityManager =
+            getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val activeNetworkInfo = connectivityManager.activeNetworkInfo
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected
     }
 
     private fun fetchInterstitialData() {
