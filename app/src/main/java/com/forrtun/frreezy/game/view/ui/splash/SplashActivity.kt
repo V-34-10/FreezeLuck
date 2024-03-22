@@ -10,12 +10,9 @@ import android.os.Bundle
 import android.os.Handler
 import android.util.DisplayMetrics
 import android.view.View
-import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
-import com.forrtun.frreezy.game.R
 import com.forrtun.frreezy.game.databinding.ActivityMainBinding
 import com.forrtun.frreezy.game.utils.FullScreen.setFullScreen
-import com.forrtun.frreezy.game.view.ui.menu.MenuActivity
 import com.forrtun.frreezy.game.view.ui.privacy.PrivacyActivity
 import okhttp3.Call
 import okhttp3.Callback
@@ -75,10 +72,7 @@ class SplashActivity : AppCompatActivity() {
                     editor.apply()
                     finish()
                 }
-                onCloseVisibilityBannerClick()
             }
-
-            onCloseBannerClick()
         }, 3 * 1000.toLong())
     }
 
@@ -188,34 +182,12 @@ class SplashActivity : AppCompatActivity() {
 
                     runOnUiThread {
                         binding.sourceBanner.visibility = View.VISIBLE
-                        binding.btnClose.visibility = View.VISIBLE
                         binding.sourceBanner.setImageBitmap(bitmap)
                         setClickListenerOnImage(actionUrl)
                     }
                 }
             }
         })
-    }
-
-    private fun setCloseButtonClickListener(closeAction: () -> Unit) {
-        val animation = AnimationUtils.loadAnimation(this, R.anim.button_animation)
-        binding.btnClose.setOnClickListener {
-            it!!.startAnimation(animation)
-            closeAction.invoke()
-        }
-    }
-
-    private fun onCloseVisibilityBannerClick() {
-        setCloseButtonClickListener {
-            binding.sourceBanner.visibility = View.GONE
-            binding.btnClose.visibility = View.GONE
-        }
-    }
-
-    private fun onCloseBannerClick() {
-        setCloseButtonClickListener {
-            startActivity(Intent(this@SplashActivity, MenuActivity::class.java))
-        }
     }
 
     private fun setClickListenerOnImage(actionUrl: String) {
