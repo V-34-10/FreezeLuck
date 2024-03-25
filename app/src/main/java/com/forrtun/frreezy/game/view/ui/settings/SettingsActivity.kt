@@ -31,7 +31,7 @@ class SettingsActivity : AppCompatActivity() {
         binding.btnRemove.setOnClickListener {
             it.startAnimation(animationClick)
             resetScore()
-            Toast.makeText(applicationContext, "Balance reset score", Toast.LENGTH_SHORT).show()
+            Toast.makeText(applicationContext, "Total reset score", Toast.LENGTH_SHORT).show()
         }
         binding.btnBack.setOnClickListener {
             it.startAnimation(animationClick)
@@ -89,7 +89,7 @@ class SettingsActivity : AppCompatActivity() {
 
     private fun resetScore() {
         sharedPreferences = getSharedPreferences("FortuneFreezyPref", MODE_PRIVATE)
-        sharedPreferences.edit().putString("Balance", getString(R.string.default_total_balance))
+        sharedPreferences.edit().putString("total", getString(R.string.default_total_balance))
             .apply()
     }
 
