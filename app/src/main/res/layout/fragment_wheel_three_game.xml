@@ -68,6 +68,30 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:ignore="RtlSymmetry" />
 
+        <ImageView
+            android:id="@+id/btn_plus"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:clickable="true"
+            android:contentDescription="@string/btn_plus_bet"
+            android:focusable="true"
+            android:src="@drawable/btn_plus_second_bet"
+            app:layout_constraintBottom_toBottomOf="@+id/text_bet"
+            app:layout_constraintStart_toEndOf="@+id/text_bet"
+            app:layout_constraintTop_toTopOf="@+id/text_bet" />
+
+        <ImageView
+            android:id="@+id/btn_minus"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:clickable="true"
+            android:contentDescription="@string/btn_minus_bet"
+            android:focusable="true"
+            android:src="@drawable/btn_minus_second_bet"
+            app:layout_constraintBottom_toBottomOf="@+id/text_bet"
+            app:layout_constraintEnd_toStartOf="@+id/text_bet"
+            app:layout_constraintTop_toTopOf="@+id/text_bet" />
+
         <TextView
             android:id="@+id/text_bet"
             android:layout_width="180dp"
@@ -82,6 +106,7 @@
             android:textColor="@color/white"
             android:textSize="@dimen/sp18"
             android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/text_balance"
             app:layout_constraintStart_toStartOf="@+id/text_win"
             app:layout_constraintTop_toBottomOf="@+id/text_balance"

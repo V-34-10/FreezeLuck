@@ -10,6 +10,8 @@ import androidx.fragment.app.Fragment
 import com.forrtun.frreezy.game.R
 import com.forrtun.frreezy.game.databinding.FragmentWheelThreeGameBinding
 import com.forrtun.frreezy.game.view.manager.BackgroundMusicManager
+import com.forrtun.frreezy.game.view.manager.ManagerStatusStake
+import com.forrtun.frreezy.game.view.manager.UpdateStatusStake
 import com.forrtun.frreezy.game.view.manager.UpdateStatusStake.convertStringToNumber
 import com.forrtun.frreezy.game.view.manager.UpdateStatusStake.getStatusStake
 import com.forrtun.frreezy.game.view.manager.UpdateStatusStake.isTotalSave
@@ -22,12 +24,16 @@ class WheelThreeGameFragment : Fragment() {
     private lateinit var binding: FragmentWheelThreeGameBinding
     private val minAngleRotate = 0f
     private val maxAngleRotate = 720f
+    private lateinit var managerStatusStake: ManagerStatusStake
     private lateinit var backgroundMusic: BackgroundMusicManager
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentWheelThreeGameBinding.inflate(layoutInflater, container, false)
+        managerStatusStake =
+            UpdateStatusStake.constructor(convertStringToNumber(binding.textBalance.text.toString()))
+        UpdateStatusStake.setStatusStakeUI(binding, managerStatusStake)
         FragmentWheelThreeGameBindingImpl(binding)
 
         backgroundMusic = BackgroundMusicManager(requireContext())
@@ -78,6 +84,18 @@ class WheelThreeGameFragment : Fragment() {
                     minAngleRotate
                 )
             }
+        }
+        binding.btnMinus.setOnClickListener {
+            animation = AnimationUtils.loadAnimation(context, R.anim.button_animation)
+            it.startAnimation(animation)
+            managerStatusStake.minusBet()
+            UpdateStatusStake.setStatusStakeUI(binding, managerStatusStake)
+        }
+        binding.btnPlus.setOnClickListener {
+            animation = AnimationUtils.loadAnimation(context, R.anim.button_animation)
+            it.startAnimation(animation)
+            managerStatusStake.plusBet()
+            UpdateStatusStake.setStatusStakeUI(binding, managerStatusStake)
         }
         binding.btnBack.setOnClickListener {
             animation = AnimationUtils.loadAnimation(context, R.anim.button_animation)
