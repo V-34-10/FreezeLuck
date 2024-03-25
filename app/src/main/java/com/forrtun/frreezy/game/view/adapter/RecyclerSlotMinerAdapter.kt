@@ -80,6 +80,7 @@ class RecyclerSlotMinerAdapter(
         defaultList = newSlotList
         notifyDataSetChanged()
         resetOpenSlotCount()
+        clickedPositions.clear()
     }
 
     private fun setOnClickHandleListener(holder: SlotViewHolder, position: Int) {
