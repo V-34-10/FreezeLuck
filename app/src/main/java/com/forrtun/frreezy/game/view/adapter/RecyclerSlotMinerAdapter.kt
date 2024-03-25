@@ -19,7 +19,7 @@ class RecyclerSlotMinerAdapter(
     private var slotOpenCounter = 0
     private var imageSlot: Int = 0
     private var imgSlot: Int = 0
-
+    private val clickedPositions = mutableSetOf<Int>()
     init {
         if (maxOpenSlot == 5) {
             slotMutableList = mutableListOf(
@@ -61,7 +61,11 @@ class RecyclerSlotMinerAdapter(
         val slotItem = defaultList[position]
         holder.slotImage.setImageResource(slotItem.image)
         holder.itemView.setOnClickListener {
-            setOnClickHandleListener(holder, position)
+            //setOnClickHandleListener(holder, position)
+            if (!clickedPositions.contains(position)) {
+                setOnClickHandleListener(holder, position)
+                clickedPositions.add(position)
+            }
         }
     }
 
