@@ -2,8 +2,10 @@ package com.forrtun.frreezy.game.view.ui.scene.games.wheels.helpers
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.view.View
 import android.view.animation.Animation
 import android.view.animation.RotateAnimation
+import android.widget.Toast
 import com.forrtun.frreezy.game.view.manager.UpdateStatusStake.convertStringToNumber
 import com.forrtun.frreezy.game.view.manager.UpdateStatusStake.setStatusStake
 import java.util.Random
@@ -90,8 +92,8 @@ object WheelHelper {
         var balance = convertStringToNumber(binding.textBalance.text.toString())
 
         val coefficient = when (binding) {
-            is FragmentWheelFourGameBindingImpl -> getWinCoefficient(angle)
-            is FragmentWheelThreeGameBindingImpl -> getWinSecondCoefficient(angle)
+            is FragmentWheelFourGameBindingImpl -> getWinSecondCoefficient(angle)
+            is FragmentWheelThreeGameBindingImpl -> getWinCoefficient(angle)
             else -> {
                 0.0f
             }
