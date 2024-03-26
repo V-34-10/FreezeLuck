@@ -30,10 +30,12 @@ import java.io.IOException
 class SplashActivity : AppCompatActivity() {
 
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
+    private var linkJSON: String =
+        "https://on.kabushinoko.com/interstitial" //TODO change on release
     private lateinit var sharedPreferences: SharedPreferences
-    private lateinit var startIntent: Intent
     private lateinit var cookies: String
     private lateinit var userAgent: String
+    private var bannerLoaded = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -49,9 +51,8 @@ class SplashActivity : AppCompatActivity() {
         animationProgressBar()
 
         Handler().postDelayed({
-
+            val startTime = System.currentTimeMillis()
             if (!isInternetAvailable()) {
-
                 if (!flagPrivacy) {
                     startActivity(Intent(this@SplashActivity, PrivacyActivity::class.java))
                     sharedPreferences.edit().putBoolean("statusPrivacy", true).apply()
@@ -59,20 +60,32 @@ class SplashActivity : AppCompatActivity() {
                     startActivity(Intent(this@SplashActivity, MenuActivity::class.java))
                 }
                 finish()
-            }
-
-            val hasUserData =
-                sharedPreferences.contains("cookies") && sharedPreferences.contains("userAgent")
-
-            if (hasUserData) {
-                val cookies = sharedPreferences.getString("cookies", "")
-                val userAgent = sharedPreferences.getString("userAgent", "")
-                val actionUrl = sharedPreferences.getString("actionUrl", "")
-                val sourceUrl = sharedPreferences.getString("sourceUrl", "")
-
-                loadImage(sourceUrl.toString(), actionUrl.toString(), cookies, userAgent)
             } else {
-                fetchInterstitialData()
+                val hasUserData =
+                    sharedPreferences.contains("cookies") && sharedPreferences.contains("userAgent")
+
+                if (hasUserData) {
+                    val cookies = sharedPreferences.getString("cookies", "")
+                    val userAgent = sharedPreferences.getString("userAgent", "")
+                    val actionUrl = sharedPreferences.getString("actionUrl", "")
+                    val sourceUrl = sharedPreferences.getString("sourceUrl", "")
+
+                    loadImage(sourceUrl.toString(), actionUrl.toString(), cookies, userAgent)
+                } else {
+                    fetchInterstitialData()
+                }
+
+                val endTime = System.currentTimeMillis()
+                val elapsedTime = endTime - startTime
+
+                if (elapsedTime > 5000 && !flagPrivacy) { // Якщо час завантаження перевищує 5 секунд
+                    startActivity(Intent(this@SplashActivity, PrivacyActivity::class.java))
+                    sharedPreferences.edit().putBoolean("statusPrivacy", true).apply()
+                    finish()
+                } else if (elapsedTime > 5000) {
+                    startActivity(Intent(this@SplashActivity, MenuActivity::class.java))
+                    finish()
+                }
             }
 
         }, 3 * 1000.toLong())
@@ -103,17 +116,18 @@ class SplashActivity : AppCompatActivity() {
         editor.apply()
     }
 
+    @SuppressLint("ObsoleteSdkInt")
     private fun isInternetAvailable(): Boolean {
         val connectivityManager =
             getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val activeNetworkInfo = connectivityManager.activeNetworkInfo
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected
+        return activeNetworkInfo != null && (activeNetworkInfo.isConnected || activeNetworkInfo.isConnectedOrConnecting)
     }
 
     private fun fetchInterstitialData() {
         val client = OkHttpClient()
         val request = Request.Builder()
-            .url("https://on.kabushinoko.com/interstitial")
+            .url(linkJSON)
             .build()
 
         client.newCall(request).enqueue(object : Callback {
