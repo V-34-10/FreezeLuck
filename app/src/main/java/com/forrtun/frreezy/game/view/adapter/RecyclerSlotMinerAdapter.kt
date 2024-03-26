@@ -61,7 +61,6 @@ class RecyclerSlotMinerAdapter(
         val slotItem = defaultList[position]
         holder.slotImage.setImageResource(slotItem.image)
         holder.itemView.setOnClickListener {
-            //setOnClickHandleListener(holder, position)
             if (!clickedPositions.contains(position)) {
                 setOnClickHandleListener(holder, position)
                 clickedPositions.add(position)
