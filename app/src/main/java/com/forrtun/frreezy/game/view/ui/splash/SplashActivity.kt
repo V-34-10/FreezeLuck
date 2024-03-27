@@ -35,7 +35,6 @@ class SplashActivity : AppCompatActivity() {
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var cookies: String
     private lateinit var userAgent: String
-    private var bannerLoaded = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
