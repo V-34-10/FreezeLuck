@@ -1,12 +1,18 @@
 package com.forrtun.frreezy.game.view.banner
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.BitmapFactory
 import android.net.Uri
+import android.os.Handler
+import android.os.Looper
+import android.util.Log
 import android.view.View
 import com.forrtun.frreezy.game.databinding.ActivityMainBinding
+import com.forrtun.frreezy.game.view.ui.menu.MenuActivity
+import com.forrtun.frreezy.game.view.ui.privacy.PrivacyActivity
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.OkHttpClient
@@ -19,15 +25,18 @@ import java.util.concurrent.TimeUnit
 
 class LoadingBanner(
     private val activity: Activity,
-    private val binding: ActivityMainBinding,
-    private var sharedPreferences: SharedPreferences
+    private val binding: ActivityMainBinding
 ) {
     private var linkJSON: String =
         "https://on.kabushinoko.com/interstitial" //TODO change on release
     private lateinit var cookies: String
     private lateinit var userAgent: String
+    private var sharedPreferences: SharedPreferences =
+        activity.getSharedPreferences("YourPreferenceName", Context.MODE_PRIVATE)
+    private var call: Call? = null
 
     fun fetchInterstitialData() {
+
         val client = OkHttpClient.Builder()
             .callTimeout(5, TimeUnit.SECONDS)
             .build()
@@ -35,12 +44,27 @@ class LoadingBanner(
             .url(linkJSON)
             .build()
 
-        client.newCall(request).enqueue(object : Callback {
+        call = client.newCall(request)
+
+        val handler = Handler(Looper.getMainLooper())
+        handler.postDelayed({
+            call?.cancel()
+            runPrivacyActivity()
+        }, 5000)
+
+        call?.enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
-                e.printStackTrace()
+                if (call.isCanceled()) {
+                    Log.i("LoadingBanner", "onFailure: Call was cancelled")
+                } else {
+                    e.printStackTrace()
+                }
             }
 
             override fun onResponse(call: Call, response: Response) {
+                if (call.isCanceled()) {
+                    Log.i("LoadingBanner", "onResponse: Call was cancelled")
+                }
                 response.use {
                     if (!response.isSuccessful) throw IOException("Unexpected code $response")
 
@@ -52,6 +76,25 @@ class LoadingBanner(
                 }
             }
         })
+    }
+
+    private fun runPrivacyActivity() {
+        val flagPrivacy = sharedPreferences.getBoolean("statusPrivacy", false)
+        if (!flagPrivacy) {
+            activity.runOnUiThread {
+                activity.startActivity(Intent(activity, PrivacyActivity::class.java))
+            }
+            sharedPreferences.edit().putBoolean("statusPrivacy", true).apply()
+        } else {
+            activity.runOnUiThread {
+                activity.startActivity(Intent(activity, MenuActivity::class.java))
+            }
+        }
+        activity.finish()
+    }
+
+    fun cancel() {
+        call?.cancel()
     }
 
     private fun parseJsonAndOpenLinks(json: String, cookies: String?, userAgent: String?) {
