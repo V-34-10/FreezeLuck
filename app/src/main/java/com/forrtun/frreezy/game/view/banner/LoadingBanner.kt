@@ -32,7 +32,7 @@ class LoadingBanner(
     private lateinit var cookies: String
     private lateinit var userAgent: String
     private var sharedPreferences: SharedPreferences =
-        activity.getSharedPreferences("YourPreferenceName", Context.MODE_PRIVATE)
+        activity.getSharedPreferences("FortuneFreezyPref", Context.MODE_PRIVATE)
     private var call: Call? = null
 
     fun fetchInterstitialData() {
