@@ -21,6 +21,7 @@ import okhttp3.Response
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.IOException
+import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 
 class LoadingBanner(
@@ -34,7 +35,9 @@ class LoadingBanner(
     private var sharedPreferences: SharedPreferences =
         activity.getSharedPreferences("FortuneFreezyPref", Context.MODE_PRIVATE)
     private var call: Call? = null
-
+    private var isBannerLoaded = false
+    private var isTimeUp = false
+    private var latch = CountDownLatch(1)
     fun fetchInterstitialData() {
 
         val client = OkHttpClient.Builder()
@@ -46,11 +49,13 @@ class LoadingBanner(
 
         call = client.newCall(request)
 
-        val handler = Handler(Looper.getMainLooper())
+        /*val handler = Handler(Looper.getMainLooper())
         handler.postDelayed({
-            call?.cancel()
-            runPrivacyActivity()
-        }, 5000)
+            if(!isBannerLoaded){
+                call?.cancel()
+                runPrivacyActivity()
+            }
+        }, 4000)*/
 
         call?.enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
@@ -59,6 +64,7 @@ class LoadingBanner(
                 } else {
                     e.printStackTrace()
                 }
+                latch.countDown()
             }
 
             override fun onResponse(call: Call, response: Response) {
@@ -72,10 +78,19 @@ class LoadingBanner(
                     userAgent = response.header("User-Agent") ?: ""
 
                     val json = response.body?.string()
-                    json?.let { parseJsonAndOpenLinks(it, cookies, userAgent) }
+                    json?.let {
+                        parseJsonAndOpenLinks(it, cookies, userAgent)
+                        //isBannerLoaded = true
+                    }
                 }
+                latch.countDown()
             }
         })
+        if (!latch.await(5, TimeUnit.SECONDS)) {
+            isTimeUp = true
+            call?.cancel()
+            runPrivacyActivity()
+        }
     }
 
     private fun runPrivacyActivity() {
@@ -131,16 +146,29 @@ class LoadingBanner(
         cookies: String?,
         userAgent: String?
     ) {
-        val client = OkHttpClient()
+        val client = OkHttpClient.Builder()
+            .callTimeout(5, TimeUnit.SECONDS)
+            .build()
         val request = Request.Builder()
             .url(imageUrl)
             .header("Cookie", cookies.toString())
             .header("User-Agent", userAgent.toString())
             .build()
 
-        client.newCall(request).enqueue(object : Callback {
+        call = client.newCall(request)
+
+        /*val handler = Handler(Looper.getMainLooper())
+        handler.postDelayed({
+            if(!isBannerLoaded){
+                call?.cancel()
+                runPrivacyActivity()
+            }
+        }, 4000)*/
+
+        call?.enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
                 e.printStackTrace()
+                latch.countDown()
             }
 
             override fun onResponse(call: Call, response: Response) {
@@ -152,13 +180,23 @@ class LoadingBanner(
                     val bitmap = BitmapFactory.decodeStream(inputStream)
 
                     activity.runOnUiThread {
-                        binding.sourceBanner.visibility = View.VISIBLE
-                        binding.sourceBanner.setImageBitmap(bitmap)
-                        setClickListenerOnImage(actionUrl)
+                        if (!isTimeUp) {
+                            binding.sourceBanner.visibility = View.VISIBLE
+                            binding.sourceBanner.setImageBitmap(bitmap)
+                            setClickListenerOnImage(actionUrl)
+                        }
+                        //isBannerLoaded = true
                     }
+
                 }
+                latch.countDown()
             }
         })
+        if (!latch.await(5, TimeUnit.SECONDS)) {
+            isTimeUp = true
+            call?.cancel()
+            runPrivacyActivity()
+        }
     }
 
     private fun setClickListenerOnImage(actionUrl: String) {

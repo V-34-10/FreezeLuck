@@ -40,19 +40,17 @@ class SplashActivity : AppCompatActivity() {
             } else {
                 checkAndLoadBanner()
             }
-        }, 2000)
+        }, 3000)
     }
 
     private fun checkAndLoadBanner() {
         val hasUserData =
             sharedPreferences.contains("cookies") && sharedPreferences.contains("userAgent")
-
         if (hasUserData) {
             val cookies = sharedPreferences.getString("cookies", "")
             val userAgent = sharedPreferences.getString("userAgent", "")
             val actionUrl = sharedPreferences.getString("actionUrl", "")
             val sourceUrl = sharedPreferences.getString("sourceUrl", "")
-
             loadingBanner.loadImage(
                 sourceUrl.toString(),
                 actionUrl.toString(),
@@ -82,7 +80,7 @@ class SplashActivity : AppCompatActivity() {
 
         val layoutParams = binding.progressBar.line.layoutParams
         val animation = ValueAnimator.ofInt(10, screenWidth).apply {
-            duration = 2000
+            duration = 3000
             addUpdateListener {
                 val animatedValue = it.animatedValue as Int
                 layoutParams.width = animatedValue
