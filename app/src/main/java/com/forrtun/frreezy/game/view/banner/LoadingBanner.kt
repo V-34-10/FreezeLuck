@@ -6,8 +6,6 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.BitmapFactory
 import android.net.Uri
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import android.view.View
 import com.forrtun.frreezy.game.databinding.ActivityMainBinding
@@ -35,7 +33,6 @@ class LoadingBanner(
     private var sharedPreferences: SharedPreferences =
         activity.getSharedPreferences("FortuneFreezyPref", Context.MODE_PRIVATE)
     private var call: Call? = null
-    private var isBannerLoaded = false
     private var isTimeUp = false
     private var latch = CountDownLatch(1)
     fun fetchInterstitialData() {
@@ -48,15 +45,6 @@ class LoadingBanner(
             .build()
 
         call = client.newCall(request)
-
-        /*val handler = Handler(Looper.getMainLooper())
-        handler.postDelayed({
-            if(!isBannerLoaded){
-                call?.cancel()
-                runPrivacyActivity()
-            }
-        }, 4000)*/
-
         call?.enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
                 if (call.isCanceled()) {
@@ -80,7 +68,6 @@ class LoadingBanner(
                     val json = response.body?.string()
                     json?.let {
                         parseJsonAndOpenLinks(it, cookies, userAgent)
-                        //isBannerLoaded = true
                     }
                 }
                 latch.countDown()
@@ -109,7 +96,9 @@ class LoadingBanner(
     }
 
     fun cancel() {
-        call?.cancel()
+        if (call?.isCanceled() == false) {
+            call?.cancel()
+        }
     }
 
     private fun parseJsonAndOpenLinks(json: String, cookies: String?, userAgent: String?) {
@@ -156,15 +145,6 @@ class LoadingBanner(
             .build()
 
         call = client.newCall(request)
-
-        /*val handler = Handler(Looper.getMainLooper())
-        handler.postDelayed({
-            if(!isBannerLoaded){
-                call?.cancel()
-                runPrivacyActivity()
-            }
-        }, 4000)*/
-
         call?.enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
                 e.printStackTrace()
@@ -185,7 +165,6 @@ class LoadingBanner(
                             binding.sourceBanner.setImageBitmap(bitmap)
                             setClickListenerOnImage(actionUrl)
                         }
-                        //isBannerLoaded = true
                     }
 
                 }
