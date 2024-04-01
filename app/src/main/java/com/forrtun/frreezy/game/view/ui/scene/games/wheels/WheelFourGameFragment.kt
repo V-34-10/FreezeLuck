@@ -1,6 +1,7 @@
 package com.forrtun.frreezy.game.view.ui.scene.games.wheels
 
 import android.annotation.SuppressLint
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,10 +10,11 @@ import android.view.animation.AnimationUtils
 import androidx.fragment.app.Fragment
 import com.forrtun.frreezy.game.R
 import com.forrtun.frreezy.game.databinding.FragmentWheelFourGameBinding
-import com.forrtun.frreezy.game.view.manager.BackgroundMusicManager
 import com.forrtun.frreezy.game.view.manager.UpdateStatusStake.convertStringToNumber
 import com.forrtun.frreezy.game.view.manager.UpdateStatusStake.getStatusStake
 import com.forrtun.frreezy.game.view.manager.UpdateStatusStake.isTotalSave
+import com.forrtun.frreezy.game.view.manager.music.BackgroundMusicManager
+import com.forrtun.frreezy.game.view.manager.music.CustomMediaPlayer
 import com.forrtun.frreezy.game.view.ui.dialog.StatusDialog.runDialog
 import com.forrtun.frreezy.game.view.ui.scene.games.wheels.helpers.FragmentWheelFourGameBindingImpl
 import com.forrtun.frreezy.game.view.ui.scene.games.wheels.helpers.WheelHelper
@@ -27,13 +29,7 @@ class WheelFourGameFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentWheelFourGameBinding.inflate(layoutInflater, container, false)
-
-        backgroundMusic = BackgroundMusicManager(requireContext())
-        backgroundMusic.apply {
-            loadBackgroundMusic(requireContext(), "backgroundMusic", R.raw.kazino_zvuk)
-            startMusic("backgroundMusic", true)
-        }
-
+        initSoundPool()
         return binding.root
     }
 
@@ -59,6 +55,12 @@ class WheelFourGameFragment : Fragment() {
                 binding.textBalance.text = "Total\n$total"
             }
         }
+    }
+
+    private fun initSoundPool() {
+        backgroundMusic = BackgroundMusicManager(CustomMediaPlayer())
+        backgroundMusic.loadBackgroundMusic("backgroundMusic", Uri.parse("android.resource://" + requireContext().packageName + "/" + R.raw.kazino_zvuk))
+        backgroundMusic.startMusic(requireContext(),"backgroundMusic", true)
     }
 
     @SuppressLint("SetTextI18n")

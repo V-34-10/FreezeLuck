@@ -1,6 +1,7 @@
 package com.forrtun.frreezy.game.view.ui.scene.games
 
 import android.annotation.SuppressLint
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,7 +15,7 @@ import com.forrtun.frreezy.game.databinding.FragmentSlotsFirstGameBinding
 import com.forrtun.frreezy.game.model.Slot
 import com.forrtun.frreezy.game.view.adapter.RecyclerSlotAdapter
 import com.forrtun.frreezy.game.view.adapter.VerticalSpaceItemDecoration
-import com.forrtun.frreezy.game.view.manager.BackgroundMusicManager
+import com.forrtun.frreezy.game.view.manager.music.BackgroundMusicManager
 import com.forrtun.frreezy.game.view.manager.ManagerStatusStake
 import com.forrtun.frreezy.game.view.manager.UpdateStatusStake.constructor
 import com.forrtun.frreezy.game.view.manager.UpdateStatusStake.convertStringToNumber
@@ -22,6 +23,7 @@ import com.forrtun.frreezy.game.view.manager.UpdateStatusStake.getStatusStake
 import com.forrtun.frreezy.game.view.manager.UpdateStatusStake.isTotalSave
 import com.forrtun.frreezy.game.view.manager.UpdateStatusStake.setStatusStake
 import com.forrtun.frreezy.game.view.manager.UpdateStatusStake.setStatusStakeUI
+import com.forrtun.frreezy.game.view.manager.music.CustomMediaPlayer
 import com.forrtun.frreezy.game.view.ui.dialog.StatusDialog.runDialog
 
 class SlotsFirstGameFragment : Fragment() {
@@ -58,13 +60,7 @@ class SlotsFirstGameFragment : Fragment() {
         binding = FragmentSlotsFirstGameBinding.inflate(layoutInflater, container, false)
         managerStatusStake = constructor(convertStringToNumber(binding.textBalance.text.toString()))
         setStatusStakeUI(binding, managerStatusStake)
-
-        backgroundMusic = BackgroundMusicManager(requireContext())
-        backgroundMusic.apply {
-            loadBackgroundMusic(requireContext(), "backgroundMusic", R.raw.kazino_zvuk)
-            startMusic("backgroundMusic", true)
-        }
-
+        initSoundPool()
         return binding.root
     }
 
@@ -91,6 +87,13 @@ class SlotsFirstGameFragment : Fragment() {
                 binding.textBalance.text = "Total\n$total"
             }
         }
+    }
+
+    private fun initSoundPool() {
+        backgroundMusic = BackgroundMusicManager(CustomMediaPlayer())
+        backgroundMusic.loadBackgroundMusic("backgroundMusic", Uri.parse("android.resource://" + requireContext().packageName + "/" + R.raw.kazino_zvuk))
+        backgroundMusic.startMusic(requireContext(),"backgroundMusic", true)
+
     }
 
     private fun initControlButton() {

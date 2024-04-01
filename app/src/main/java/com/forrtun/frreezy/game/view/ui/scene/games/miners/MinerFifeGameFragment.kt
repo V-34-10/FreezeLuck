@@ -1,6 +1,7 @@
 package com.forrtun.frreezy.game.view.ui.scene.games.miners
 
 import android.annotation.SuppressLint
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,11 +14,12 @@ import com.forrtun.frreezy.game.databinding.FragmentMinerFifeGameBinding
 import com.forrtun.frreezy.game.model.Slot
 import com.forrtun.frreezy.game.view.adapter.RecyclerSlotMinerAdapter
 import com.forrtun.frreezy.game.view.adapter.SlotClickListener
-import com.forrtun.frreezy.game.view.manager.BackgroundMusicManager
 import com.forrtun.frreezy.game.view.manager.UpdateStatusStake
 import com.forrtun.frreezy.game.view.manager.UpdateStatusStake.convertStringToNumber
 import com.forrtun.frreezy.game.view.manager.UpdateStatusStake.getStatusStake
 import com.forrtun.frreezy.game.view.manager.UpdateStatusStake.isTotalSave
+import com.forrtun.frreezy.game.view.manager.music.BackgroundMusicManager
+import com.forrtun.frreezy.game.view.manager.music.CustomMediaPlayer
 import com.forrtun.frreezy.game.view.ui.dialog.StatusDialog.runDialog
 
 class MinerFifeGameFragment : Fragment(), SlotClickListener {
@@ -34,13 +36,7 @@ class MinerFifeGameFragment : Fragment(), SlotClickListener {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentMinerFifeGameBinding.inflate(layoutInflater, container, false)
-
-        backgroundMusic = BackgroundMusicManager(requireContext())
-        backgroundMusic.apply {
-            loadBackgroundMusic(requireContext(), "backgroundMusic", R.raw.kazino_zvuk)
-            startMusic("backgroundMusic", true)
-        }
-
+        initSoundPool()
         return binding.root
     }
 
@@ -68,6 +64,12 @@ class MinerFifeGameFragment : Fragment(), SlotClickListener {
                 binding.textBalance.text = "Total\n$total"
             }
         }
+    }
+
+    private fun initSoundPool() {
+        backgroundMusic = BackgroundMusicManager(CustomMediaPlayer())
+        backgroundMusic.loadBackgroundMusic("backgroundMusic", Uri.parse("android.resource://" + requireContext().packageName + "/" + R.raw.kazino_zvuk))
+        backgroundMusic.startMusic(requireContext(),"backgroundMusic", true)
     }
 
     @SuppressLint("SetTextI18n")
