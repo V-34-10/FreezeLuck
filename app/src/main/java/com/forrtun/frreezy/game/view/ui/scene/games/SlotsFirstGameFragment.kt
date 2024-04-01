@@ -15,15 +15,15 @@ import com.forrtun.frreezy.game.databinding.FragmentSlotsFirstGameBinding
 import com.forrtun.frreezy.game.model.Slot
 import com.forrtun.frreezy.game.view.adapter.RecyclerSlotAdapter
 import com.forrtun.frreezy.game.view.adapter.VerticalSpaceItemDecoration
-import com.forrtun.frreezy.game.view.manager.ManagerStatusStake
-import com.forrtun.frreezy.game.view.manager.UpdateStatusStake.constructor
-import com.forrtun.frreezy.game.view.manager.UpdateStatusStake.convertStringToNumber
-import com.forrtun.frreezy.game.view.manager.UpdateStatusStake.getStatusStake
-import com.forrtun.frreezy.game.view.manager.UpdateStatusStake.isTotalSave
-import com.forrtun.frreezy.game.view.manager.UpdateStatusStake.setStatusStake
-import com.forrtun.frreezy.game.view.manager.UpdateStatusStake.setStatusStakeUI
 import com.forrtun.frreezy.game.view.manager.music.BackgroundMusicManager
 import com.forrtun.frreezy.game.view.manager.music.CustomMediaPlayer
+import com.forrtun.frreezy.game.view.manager.stake.ManagerStatusStake
+import com.forrtun.frreezy.game.view.manager.stake.UpdateStatusStake.constructor
+import com.forrtun.frreezy.game.view.manager.stake.UpdateStatusStake.convertStringToNumber
+import com.forrtun.frreezy.game.view.manager.stake.UpdateStatusStake.getStatusStake
+import com.forrtun.frreezy.game.view.manager.stake.UpdateStatusStake.isTotalSave
+import com.forrtun.frreezy.game.view.manager.stake.UpdateStatusStake.setStatusStake
+import com.forrtun.frreezy.game.view.manager.stake.UpdateStatusStake.setStatusStakeUI
 import com.forrtun.frreezy.game.view.ui.dialog.StatusDialog.runDialog
 
 class SlotsFirstGameFragment : Fragment() {
@@ -58,7 +58,10 @@ class SlotsFirstGameFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentSlotsFirstGameBinding.inflate(layoutInflater, container, false)
-        managerStatusStake = constructor(convertStringToNumber(binding.textBalance.text.toString()))
+        managerStatusStake = constructor(
+            requireContext(),
+            convertStringToNumber(binding.textBalance.text.toString())
+        )
         setStatusStakeUI(binding, managerStatusStake)
         initSoundPool()
         return binding.root
@@ -81,7 +84,7 @@ class SlotsFirstGameFragment : Fragment() {
         setSlotRecycler()
         initControlButton()
         activity?.let { context ->
-            if (isTotalSave(context)) {
+            if (isTotalSave()) {
                 val (saveTotal) = getStatusStake(context)
                 val total = convertStringToNumber(saveTotal.toString())
                 binding.textBalance.text = "Total\n$total"
@@ -91,8 +94,11 @@ class SlotsFirstGameFragment : Fragment() {
 
     private fun initSoundPool() {
         backgroundMusic = BackgroundMusicManager(CustomMediaPlayer())
-        backgroundMusic.loadBackgroundMusic("backgroundMusic", Uri.parse("android.resource://" + requireContext().packageName + "/" + R.raw.kazino_zvuk))
-        backgroundMusic.startMusic(requireContext(),"backgroundMusic", true)
+        backgroundMusic.loadBackgroundMusic(
+            "backgroundMusic",
+            Uri.parse("android.resource://" + requireContext().packageName + "/" + R.raw.kazino_zvuk)
+        )
+        backgroundMusic.startMusic(requireContext(), "backgroundMusic", true)
 
     }
 
@@ -127,13 +133,13 @@ class SlotsFirstGameFragment : Fragment() {
         binding.btnMinus.setOnClickListener {
             animation = AnimationUtils.loadAnimation(context, R.anim.button_animation)
             it.startAnimation(animation)
-            managerStatusStake.minusBet()
+            managerStatusStake.decreaseBet()
             setStatusStakeUI(binding, managerStatusStake)
         }
         binding.btnPlus.setOnClickListener {
             animation = AnimationUtils.loadAnimation(context, R.anim.button_animation)
             it.startAnimation(animation)
-            managerStatusStake.plusBet()
+            managerStatusStake.increaseBet()
             setStatusStakeUI(binding, managerStatusStake)
         }
         binding.btnBack.setOnClickListener {
@@ -176,9 +182,8 @@ class SlotsFirstGameFragment : Fragment() {
             win += newSumWin.toInt()
             binding.textWin.text = "WIN\n$win"
         }
-        activity?.let { it1 ->
+        activity?.let {
             setStatusStake(
-                it1,
                 "Total\n$balance",
                 bid.toString(),
                 "WIN\n$win"

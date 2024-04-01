@@ -4,8 +4,8 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.view.animation.Animation
 import android.view.animation.RotateAnimation
-import com.forrtun.frreezy.game.view.manager.UpdateStatusStake.convertStringToNumber
-import com.forrtun.frreezy.game.view.manager.UpdateStatusStake.setStatusStake
+import com.forrtun.frreezy.game.view.manager.stake.UpdateStatusStake.convertStringToNumber
+import com.forrtun.frreezy.game.view.manager.stake.UpdateStatusStake.setStatusStake
 import java.util.Random
 import kotlin.math.roundToInt
 
@@ -111,7 +111,6 @@ object WheelHelper {
             binding.textWin.text = "WIN\n$win"
         }
         setStatusStake(
-            activity,
             "Total\n$balance",
             bet.toString(),
             "WIN\n$win"

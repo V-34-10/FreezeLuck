@@ -14,15 +14,15 @@ import com.forrtun.frreezy.game.databinding.FragmentMinerSecondGameBinding
 import com.forrtun.frreezy.game.model.Slot
 import com.forrtun.frreezy.game.view.adapter.RecyclerSlotMinerAdapter
 import com.forrtun.frreezy.game.view.adapter.SlotClickListener
-import com.forrtun.frreezy.game.view.manager.ManagerStatusStake
-import com.forrtun.frreezy.game.view.manager.UpdateStatusStake.constructor
-import com.forrtun.frreezy.game.view.manager.UpdateStatusStake.convertStringToNumber
-import com.forrtun.frreezy.game.view.manager.UpdateStatusStake.getStatusStake
-import com.forrtun.frreezy.game.view.manager.UpdateStatusStake.isTotalSave
-import com.forrtun.frreezy.game.view.manager.UpdateStatusStake.setStatusStake
-import com.forrtun.frreezy.game.view.manager.UpdateStatusStake.setStatusStakeUI
 import com.forrtun.frreezy.game.view.manager.music.BackgroundMusicManager
 import com.forrtun.frreezy.game.view.manager.music.CustomMediaPlayer
+import com.forrtun.frreezy.game.view.manager.stake.ManagerStatusStake
+import com.forrtun.frreezy.game.view.manager.stake.UpdateStatusStake.constructor
+import com.forrtun.frreezy.game.view.manager.stake.UpdateStatusStake.convertStringToNumber
+import com.forrtun.frreezy.game.view.manager.stake.UpdateStatusStake.getStatusStake
+import com.forrtun.frreezy.game.view.manager.stake.UpdateStatusStake.isTotalSave
+import com.forrtun.frreezy.game.view.manager.stake.UpdateStatusStake.setStatusStake
+import com.forrtun.frreezy.game.view.manager.stake.UpdateStatusStake.setStatusStakeUI
 import com.forrtun.frreezy.game.view.ui.dialog.StatusDialog.runDialog
 
 class MinerSecondGameFragment : Fragment(), SlotClickListener {
@@ -40,7 +40,10 @@ class MinerSecondGameFragment : Fragment(), SlotClickListener {
     ): View {
         binding = FragmentMinerSecondGameBinding.inflate(layoutInflater, container, false)
         managerStatusStake =
-            constructor(convertStringToNumber(binding.textBalance.text.toString()))
+            constructor(
+                requireContext(),
+                convertStringToNumber(binding.textBalance.text.toString())
+            )
         setStatusStakeUI(binding, managerStatusStake)
         initSoundPool()
         return binding.root
@@ -64,7 +67,7 @@ class MinerSecondGameFragment : Fragment(), SlotClickListener {
         initControlButton()
         slotMinerAdapter.setSlotMinerClickListener(this)
         activity?.let { context ->
-            if (isTotalSave(context)) {
+            if (isTotalSave()) {
                 val (saveTotal) = getStatusStake(context)
                 val total = convertStringToNumber(saveTotal.toString())
                 binding.textBalance.text = "Total\n$total"
@@ -74,8 +77,11 @@ class MinerSecondGameFragment : Fragment(), SlotClickListener {
 
     private fun initSoundPool() {
         backgroundMusic = BackgroundMusicManager(CustomMediaPlayer())
-        backgroundMusic.loadBackgroundMusic("backgroundMusic", Uri.parse("android.resource://" + requireContext().packageName + "/" + R.raw.kazino_zvuk))
-        backgroundMusic.startMusic(requireContext(),"backgroundMusic", true)
+        backgroundMusic.loadBackgroundMusic(
+            "backgroundMusic",
+            Uri.parse("android.resource://" + requireContext().packageName + "/" + R.raw.kazino_zvuk)
+        )
+        backgroundMusic.startMusic(requireContext(), "backgroundMusic", true)
     }
 
     private fun initControlButton() {
@@ -91,13 +97,13 @@ class MinerSecondGameFragment : Fragment(), SlotClickListener {
         binding.btnMinus.setOnClickListener {
             animation = AnimationUtils.loadAnimation(context, R.anim.button_animation)
             it.startAnimation(animation)
-            managerStatusStake.minusBet()
+            managerStatusStake.decreaseBet()
             setStatusStakeUI(binding, managerStatusStake)
         }
         binding.btnPlus.setOnClickListener {
             animation = AnimationUtils.loadAnimation(context, R.anim.button_animation)
             it.startAnimation(animation)
-            managerStatusStake.plusBet()
+            managerStatusStake.increaseBet()
             setStatusStakeUI(binding, managerStatusStake)
         }
         binding.btnBack.setOnClickListener {
@@ -161,9 +167,8 @@ class MinerSecondGameFragment : Fragment(), SlotClickListener {
             win += newSumWin
             binding.textWin.text = "WIN\n$win"
         }
-        activity?.let { it1 ->
+        activity?.let {
             setStatusStake(
-                it1,
                 "Total\n$balance",
                 bid.toString(),
                 "WIN\n$win"

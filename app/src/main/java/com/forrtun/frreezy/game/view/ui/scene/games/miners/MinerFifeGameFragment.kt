@@ -14,12 +14,12 @@ import com.forrtun.frreezy.game.databinding.FragmentMinerFifeGameBinding
 import com.forrtun.frreezy.game.model.Slot
 import com.forrtun.frreezy.game.view.adapter.RecyclerSlotMinerAdapter
 import com.forrtun.frreezy.game.view.adapter.SlotClickListener
-import com.forrtun.frreezy.game.view.manager.UpdateStatusStake
-import com.forrtun.frreezy.game.view.manager.UpdateStatusStake.convertStringToNumber
-import com.forrtun.frreezy.game.view.manager.UpdateStatusStake.getStatusStake
-import com.forrtun.frreezy.game.view.manager.UpdateStatusStake.isTotalSave
 import com.forrtun.frreezy.game.view.manager.music.BackgroundMusicManager
 import com.forrtun.frreezy.game.view.manager.music.CustomMediaPlayer
+import com.forrtun.frreezy.game.view.manager.stake.UpdateStatusStake
+import com.forrtun.frreezy.game.view.manager.stake.UpdateStatusStake.convertStringToNumber
+import com.forrtun.frreezy.game.view.manager.stake.UpdateStatusStake.getStatusStake
+import com.forrtun.frreezy.game.view.manager.stake.UpdateStatusStake.isTotalSave
 import com.forrtun.frreezy.game.view.ui.dialog.StatusDialog.runDialog
 
 class MinerFifeGameFragment : Fragment(), SlotClickListener {
@@ -58,7 +58,7 @@ class MinerFifeGameFragment : Fragment(), SlotClickListener {
         initControlButton()
         slotMinerAdapter.setSlotMinerClickListener(this)
         activity?.let { context ->
-            if (isTotalSave(context)) {
+            if (isTotalSave()) {
                 val (saveTotal) = getStatusStake(context)
                 val total = convertStringToNumber(saveTotal.toString())
                 binding.textBalance.text = "Total\n$total"
@@ -157,9 +157,8 @@ class MinerFifeGameFragment : Fragment(), SlotClickListener {
             win += newSumWin
             binding.textWin.text = "WIN\n$win"
         }
-        activity?.let { it1 ->
+        activity?.let {
             UpdateStatusStake.setStatusStake(
-                it1,
                 "Total\n$balance",
                 bid.toString(),
                 "WIN\n$win"

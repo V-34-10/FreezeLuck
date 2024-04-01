@@ -10,11 +10,11 @@ import android.view.animation.AnimationUtils
 import androidx.fragment.app.Fragment
 import com.forrtun.frreezy.game.R
 import com.forrtun.frreezy.game.databinding.FragmentWheelFourGameBinding
-import com.forrtun.frreezy.game.view.manager.UpdateStatusStake.convertStringToNumber
-import com.forrtun.frreezy.game.view.manager.UpdateStatusStake.getStatusStake
-import com.forrtun.frreezy.game.view.manager.UpdateStatusStake.isTotalSave
 import com.forrtun.frreezy.game.view.manager.music.BackgroundMusicManager
 import com.forrtun.frreezy.game.view.manager.music.CustomMediaPlayer
+import com.forrtun.frreezy.game.view.manager.stake.UpdateStatusStake.convertStringToNumber
+import com.forrtun.frreezy.game.view.manager.stake.UpdateStatusStake.getStatusStake
+import com.forrtun.frreezy.game.view.manager.stake.UpdateStatusStake.isTotalSave
 import com.forrtun.frreezy.game.view.ui.dialog.StatusDialog.runDialog
 import com.forrtun.frreezy.game.view.ui.scene.games.wheels.helpers.FragmentWheelFourGameBindingImpl
 import com.forrtun.frreezy.game.view.ui.scene.games.wheels.helpers.WheelHelper
@@ -49,7 +49,7 @@ class WheelFourGameFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initControlButton()
         activity?.let { context ->
-            if (isTotalSave(context)) {
+            if (isTotalSave()) {
                 val (saveTotal) = getStatusStake(context)
                 val total = convertStringToNumber(saveTotal.toString())
                 binding.textBalance.text = "Total\n$total"

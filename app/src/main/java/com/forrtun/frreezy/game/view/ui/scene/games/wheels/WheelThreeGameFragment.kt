@@ -11,12 +11,12 @@ import androidx.fragment.app.Fragment
 import com.forrtun.frreezy.game.R
 import com.forrtun.frreezy.game.databinding.FragmentWheelThreeGameBinding
 import com.forrtun.frreezy.game.view.manager.music.BackgroundMusicManager
-import com.forrtun.frreezy.game.view.manager.ManagerStatusStake
-import com.forrtun.frreezy.game.view.manager.UpdateStatusStake
-import com.forrtun.frreezy.game.view.manager.UpdateStatusStake.convertStringToNumber
-import com.forrtun.frreezy.game.view.manager.UpdateStatusStake.getStatusStake
-import com.forrtun.frreezy.game.view.manager.UpdateStatusStake.isTotalSave
 import com.forrtun.frreezy.game.view.manager.music.CustomMediaPlayer
+import com.forrtun.frreezy.game.view.manager.stake.ManagerStatusStake
+import com.forrtun.frreezy.game.view.manager.stake.UpdateStatusStake
+import com.forrtun.frreezy.game.view.manager.stake.UpdateStatusStake.convertStringToNumber
+import com.forrtun.frreezy.game.view.manager.stake.UpdateStatusStake.getStatusStake
+import com.forrtun.frreezy.game.view.manager.stake.UpdateStatusStake.isTotalSave
 import com.forrtun.frreezy.game.view.ui.dialog.StatusDialog.runDialog
 import com.forrtun.frreezy.game.view.ui.scene.games.wheels.helpers.FragmentWheelThreeGameBindingImpl
 import com.forrtun.frreezy.game.view.ui.scene.games.wheels.helpers.WheelHelper
@@ -34,7 +34,10 @@ class WheelThreeGameFragment : Fragment() {
     ): View {
         binding = FragmentWheelThreeGameBinding.inflate(layoutInflater, container, false)
         managerStatusStake =
-            UpdateStatusStake.constructor(convertStringToNumber(binding.textBalance.text.toString()))
+            UpdateStatusStake.constructor(
+                requireContext(),
+                convertStringToNumber(binding.textBalance.text.toString())
+            )
         UpdateStatusStake.setStatusStakeUI(binding, managerStatusStake)
         FragmentWheelThreeGameBindingImpl(binding)
         initSoundPool()
@@ -57,7 +60,7 @@ class WheelThreeGameFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initControlButton()
         activity?.let { context ->
-            if (isTotalSave(context)) {
+            if (isTotalSave()) {
                 val (saveTotal) = getStatusStake(context)
                 val total = convertStringToNumber(saveTotal.toString())
                 binding.textBalance.text = "Total\n$total"
@@ -67,8 +70,11 @@ class WheelThreeGameFragment : Fragment() {
 
     private fun initSoundPool() {
         backgroundMusic = BackgroundMusicManager(CustomMediaPlayer())
-        backgroundMusic.loadBackgroundMusic("backgroundMusic", Uri.parse("android.resource://" + requireContext().packageName + "/" + R.raw.kazino_zvuk))
-        backgroundMusic.startMusic(requireContext(),"backgroundMusic", true)
+        backgroundMusic.loadBackgroundMusic(
+            "backgroundMusic",
+            Uri.parse("android.resource://" + requireContext().packageName + "/" + R.raw.kazino_zvuk)
+        )
+        backgroundMusic.startMusic(requireContext(), "backgroundMusic", true)
     }
 
     private fun initControlButton() {
@@ -90,13 +96,13 @@ class WheelThreeGameFragment : Fragment() {
         binding.btnMinus.setOnClickListener {
             animation = AnimationUtils.loadAnimation(context, R.anim.button_animation)
             it.startAnimation(animation)
-            managerStatusStake.minusBet()
+            managerStatusStake.decreaseBet()
             UpdateStatusStake.setStatusStakeUI(binding, managerStatusStake)
         }
         binding.btnPlus.setOnClickListener {
             animation = AnimationUtils.loadAnimation(context, R.anim.button_animation)
             it.startAnimation(animation)
-            managerStatusStake.plusBet()
+            managerStatusStake.increaseBet()
             UpdateStatusStake.setStatusStakeUI(binding, managerStatusStake)
         }
         binding.btnBack.setOnClickListener {
