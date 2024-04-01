@@ -15,7 +15,6 @@ import com.forrtun.frreezy.game.databinding.FragmentSlotsFirstGameBinding
 import com.forrtun.frreezy.game.model.Slot
 import com.forrtun.frreezy.game.view.adapter.RecyclerSlotAdapter
 import com.forrtun.frreezy.game.view.adapter.VerticalSpaceItemDecoration
-import com.forrtun.frreezy.game.view.manager.music.BackgroundMusicManager
 import com.forrtun.frreezy.game.view.manager.ManagerStatusStake
 import com.forrtun.frreezy.game.view.manager.UpdateStatusStake.constructor
 import com.forrtun.frreezy.game.view.manager.UpdateStatusStake.convertStringToNumber
@@ -23,6 +22,7 @@ import com.forrtun.frreezy.game.view.manager.UpdateStatusStake.getStatusStake
 import com.forrtun.frreezy.game.view.manager.UpdateStatusStake.isTotalSave
 import com.forrtun.frreezy.game.view.manager.UpdateStatusStake.setStatusStake
 import com.forrtun.frreezy.game.view.manager.UpdateStatusStake.setStatusStakeUI
+import com.forrtun.frreezy.game.view.manager.music.BackgroundMusicManager
 import com.forrtun.frreezy.game.view.manager.music.CustomMediaPlayer
 import com.forrtun.frreezy.game.view.ui.dialog.StatusDialog.runDialog
 
@@ -105,7 +105,7 @@ class SlotsFirstGameFragment : Fragment() {
             }
 
             lockAnimation()
-            slotAdapter.updateSlotList(emptyList())
+            slotAdapter.resetSlotList(emptyList())
 
             animation?.setAnimationListener(object : Animation.AnimationListener {
                 override fun onAnimationStart(animation: Animation?) {
@@ -121,8 +121,8 @@ class SlotsFirstGameFragment : Fragment() {
                 override fun onAnimationRepeat(animation: Animation?) {}
             })
             getShuffleSlotList()
-            slotAdapter.updateSlotList(slotList)
-            slotAdapter.setAnimationSpin(binding.sceneSlots)
+            slotAdapter.resetSlotList(slotList)
+            slotAdapter.setAnimationSpin()
         }
         binding.btnMinus.setOnClickListener {
             animation = AnimationUtils.loadAnimation(context, R.anim.button_animation)
