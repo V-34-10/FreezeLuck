@@ -79,10 +79,9 @@ class WheelFourGameFragment : Fragment() {
             if (convertStringToNumber(getString(R.string.default_total_balance)) <= 0) {
                 return@setOnClickListener
             }
-            activity?.let { it1 ->
+            activity?.let {
                 WheelHelper.animRotateWheel(
                     FragmentWheelFourGameBindingImpl(binding),
-                    it1,
                     maxAngleRotate,
                     minAngleRotate
                 )

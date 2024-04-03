@@ -5,7 +5,7 @@ import android.widget.TextView
 import com.forrtun.frreezy.game.databinding.FragmentWheelFourGameBinding
 import com.forrtun.frreezy.game.databinding.FragmentWheelThreeGameBinding
 
-interface GameBinding {
+interface GameWheelBinding {
     val textBet: TextView
     val textWin: TextView
     val textBalance: TextView
@@ -13,7 +13,7 @@ interface GameBinding {
 }
 
 class FragmentWheelThreeGameBindingImpl(private val binding: FragmentWheelThreeGameBinding) :
-    GameBinding {
+    GameWheelBinding {
     override val textBet: TextView
         get() = binding.textBet
     override val textWin: TextView
@@ -26,7 +26,7 @@ class FragmentWheelThreeGameBindingImpl(private val binding: FragmentWheelThreeG
 }
 
 class FragmentWheelFourGameBindingImpl(private val binding: FragmentWheelFourGameBinding) :
-    GameBinding {
+    GameWheelBinding {
     override val textBet: TextView
         get() = binding.textBet
     override val textWin: TextView

@@ -1,7 +1,6 @@
 package com.forrtun.frreezy.game.view.ui.scene.games.wheels.helpers
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.view.animation.Animation
 import android.view.animation.RotateAnimation
 import com.forrtun.frreezy.game.view.manager.stake.UpdateStatusStake.convertStringToNumber
@@ -12,8 +11,7 @@ import kotlin.math.roundToInt
 object WheelHelper {
     private var currentAngle = 0f
     fun animRotateWheel(
-        binding: GameBinding,
-        activity: Activity,
+        binding: GameWheelBinding,
         maxAngleRotate: Float,
         minAngleRotate: Float
     ) {
@@ -34,7 +32,7 @@ object WheelHelper {
 
             override fun onAnimationEnd(animation: Animation?) {
                 currentAngle += randomAngleRotate
-                updateStatusBalance(randomAngleRotate, binding, activity)
+                updateStatusBalance(randomAngleRotate, binding)
             }
 
             override fun onAnimationRepeat(animation: Animation?) {}
@@ -84,7 +82,7 @@ object WheelHelper {
     }
 
     @SuppressLint("SetTextI18n")
-    private fun updateStatusBalance(angle: Float, binding: GameBinding, activity: Activity) {
+    private fun updateStatusBalance(angle: Float, binding: GameWheelBinding) {
         val bet = convertStringToNumber(binding.textBet.text.toString())
         var win = convertStringToNumber(binding.textWin.text.toString())
         var balance = convertStringToNumber(binding.textBalance.text.toString())
