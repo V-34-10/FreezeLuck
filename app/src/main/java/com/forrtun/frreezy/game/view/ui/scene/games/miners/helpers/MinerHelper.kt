@@ -30,34 +30,45 @@ object MinerHelper {
         }
     }
 
+    private fun getWinFirstCoefficient(slotList: List<Slot>): Float {
+        return when (slotList.subList(4, 12).distinct().size) {
+            2 -> 0.5f
+            3 -> 1.5f
+            4 -> 2.5f
+            else -> 0.0f
+        }
+    }
+
     @SuppressLint("SetTextI18n")
     fun updateStatusBalance(
-        slot: Slot,
-        binding: GameMinerBinding
+        slot: Slot? = null,
+        binding: GameMinerBinding,
+        slotList: List<Slot> = emptyList()
     ) {
         val bid = convertStringToNumber(binding.textBet.text.toString())
         var win = convertStringToNumber(binding.textWin.text.toString())
         var balance = convertStringToNumber(binding.textBalance.text.toString())
 
         val coefficient = when (binding) {
-            is FragmentMinerFifeGameBindingImpl -> getWinFifeCoefficient(slot)
-            is FragmentMinerSecondGameBindingImpl -> getWinSecondCoefficient(slot)
+            is FragmentMinerFifeGameBindingImpl -> slot?.let { getWinFifeCoefficient(it) }
+            is FragmentMinerSecondGameBindingImpl -> slot?.let { getWinSecondCoefficient(it) }
+            is FragmentSlotFirstGameBindingImpl -> getWinFirstCoefficient(slotList)
             else -> {
                 0.0f
             }
         }
 
-        if (coefficient.toInt() == 0) {
+        if (coefficient?.toInt() == 0) {
             balance -= bid
             if (balance < 0) {
                 balance = 0
             }
             binding.textBalance.text = "Total\n$balance"
         } else {
-            val newSumWin = bid * coefficient.toInt()
-            balance += newSumWin
+            val newSumWin = bid * coefficient!!
+            balance += newSumWin.toInt()
             binding.textBalance.text = "Total\n$balance"
-            win += newSumWin
+            win += newSumWin.toInt()
             binding.textWin.text = "WIN\n$win"
         }
         setStatusStake(

@@ -62,5 +62,4 @@ class RecyclerSlotAdapter(private var slotRecyclerList: List<Slot>) :
             notifyItemChanged(i)
         }
     }
-
 }
