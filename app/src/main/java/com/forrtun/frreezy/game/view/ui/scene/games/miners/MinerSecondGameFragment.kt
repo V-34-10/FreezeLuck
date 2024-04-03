@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AnimationUtils
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.forrtun.frreezy.game.R
@@ -21,19 +20,19 @@ import com.forrtun.frreezy.game.view.manager.stake.UpdateStatusStake.constructor
 import com.forrtun.frreezy.game.view.manager.stake.UpdateStatusStake.convertStringToNumber
 import com.forrtun.frreezy.game.view.manager.stake.UpdateStatusStake.getStatusStake
 import com.forrtun.frreezy.game.view.manager.stake.UpdateStatusStake.isTotalSave
-import com.forrtun.frreezy.game.view.manager.stake.UpdateStatusStake.setStatusStake
 import com.forrtun.frreezy.game.view.manager.stake.UpdateStatusStake.setStatusStakeUI
+import com.forrtun.frreezy.game.view.ui.animation.AnimationUtil
 import com.forrtun.frreezy.game.view.ui.dialog.StatusDialog.runDialog
+import com.forrtun.frreezy.game.view.ui.scene.games.miners.helpers.FragmentMinerSecondGameBindingImpl
+import com.forrtun.frreezy.game.view.ui.scene.games.miners.helpers.MinerHelper
 
 class MinerSecondGameFragment : Fragment(), SlotClickListener {
 
     private lateinit var binding: FragmentMinerSecondGameBinding
-    private var originalSlotMutableList = MutableList(12) { R.drawable.ic_slot_7b }
-    private lateinit var slotList: List<Slot>
-    private lateinit var slotMinerAdapter: RecyclerSlotMinerAdapter
-    private var defaultBalance = 10000
     private lateinit var managerStatusStake: ManagerStatusStake
     private lateinit var backgroundMusic: BackgroundMusicManager
+    private lateinit var slotMinerAdapter: RecyclerSlotMinerAdapter
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -63,14 +62,22 @@ class MinerSecondGameFragment : Fragment(), SlotClickListener {
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setSlotRecycler()
-        initControlButton()
-        slotMinerAdapter.setSlotMinerClickListener(this)
+        val originalSlotMutableList = MutableList(12) { R.drawable.ic_slot_7b }
+        setSlotRecycler(originalSlotMutableList)
+        initControlButton(originalSlotMutableList)
+        slotMinerAdapter.setMinerClickListener(this)
+        loadStatusTotal()
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun loadStatusTotal() {
         activity?.let { context ->
             if (isTotalSave()) {
-                val (saveTotal) = getStatusStake(context)
-                val total = convertStringToNumber(saveTotal.toString())
-                binding.textBalance.text = "Total\n$total"
+                getStatusStake(context).let { (total, _, _) ->
+                    total?.let {
+                        binding.textBalance.text = "Total\n${convertStringToNumber(total)}"
+                    }
+                }
             }
         }
     }
@@ -84,31 +91,26 @@ class MinerSecondGameFragment : Fragment(), SlotClickListener {
         backgroundMusic.startMusic(requireContext(), "backgroundMusic", true)
     }
 
-    private fun initControlButton() {
-        var animation = AnimationUtils.loadAnimation(context, R.anim.button_animation)
+    private fun initControlButton(originalSlotMutableList: MutableList<Int>) {
         binding.btnSpin.setOnClickListener { it ->
-            it!!.startAnimation(animation)
-            if (defaultBalance <= 0) {
+            it.startAnimation(AnimationUtil.loadButtonAnimation(requireContext()))
+            if (convertStringToNumber(getString(R.string.default_total)) <= 0) {
                 return@setOnClickListener
             }
-            slotList = originalSlotMutableList.map { Slot(it) }
-            binding.sceneSlots.let { slotMinerAdapter.updateSlotList(slotList) }
+            binding.sceneSlots.let { slotMinerAdapter.updateSlotList(originalSlotMutableList.map { Slot(it) }) }
         }
         binding.btnMinus.setOnClickListener {
-            animation = AnimationUtils.loadAnimation(context, R.anim.button_animation)
-            it.startAnimation(animation)
+            it.startAnimation(AnimationUtil.loadButtonAnimation(requireContext()))
             managerStatusStake.decreaseBet()
             setStatusStakeUI(binding, managerStatusStake)
         }
         binding.btnPlus.setOnClickListener {
-            animation = AnimationUtils.loadAnimation(context, R.anim.button_animation)
-            it.startAnimation(animation)
+            it.startAnimation(AnimationUtil.loadButtonAnimation(requireContext()))
             managerStatusStake.increaseBet()
             setStatusStakeUI(binding, managerStatusStake)
         }
         binding.btnBack.setOnClickListener {
-            animation = AnimationUtils.loadAnimation(context, R.anim.button_animation)
-            it.startAnimation(animation)
+            it.startAnimation(AnimationUtil.loadButtonAnimation(requireContext()))
             if (convertStringToNumber(binding.textWin.text.toString()) == 0) {
                 activity?.let { it1 ->
                     runDialog(
@@ -127,51 +129,17 @@ class MinerSecondGameFragment : Fragment(), SlotClickListener {
         }
     }
 
-    private fun setSlotRecycler() {
-        slotList = originalSlotMutableList.map { Slot(it) }
-        slotMinerAdapter = RecyclerSlotMinerAdapter(slotList, 5)
-        binding.sceneSlots.apply {
-            layoutManager = GridLayoutManager(context, 4)
-            adapter = slotMinerAdapter
-        }
+    private fun setSlotRecycler(originalSlotMutableList: MutableList<Int>) {
+        slotMinerAdapter = RecyclerSlotMinerAdapter(originalSlotMutableList.map { Slot(it) }, 5)
+        binding.sceneSlots.layoutManager = GridLayoutManager(context, 4)
+        binding.sceneSlots.adapter = slotMinerAdapter
     }
 
-    private fun getWinCoefficient(slot: Slot): Float {
-        return when (slot.image) {
-            R.drawable.ic_slot_4b -> 4.5f
-            R.drawable.ic_slot_5b -> 0.0f
-            R.drawable.ic_slot_1b -> 1.0f
-            R.drawable.ic_slot_3b -> 2.5f
-            R.drawable.ic_slot_2b -> 3.5f
-            R.drawable.ic_slot_6b -> 0.0f
-            else -> 0.0f
-        }
-    }
-
-    @SuppressLint("SetTextI18n")
     override fun onItemClick(position: Int, slot: Slot) {
-        val bid = convertStringToNumber(binding.textBet.text.toString())
-        var win = convertStringToNumber(binding.textWin.text.toString())
-        var balance = convertStringToNumber(binding.textBalance.text.toString())
-
-        if (getWinCoefficient(slot).toInt() == 0) {
-            balance -= bid
-            if (balance < 0) {
-                balance = 0
-            }
-            binding.textBalance.text = "Total\n$balance"
-        } else {
-            val newSumWin = bid * getWinCoefficient(slot).toInt()
-            balance += newSumWin
-            binding.textBalance.text = "Total\n$balance"
-            win += newSumWin
-            binding.textWin.text = "WIN\n$win"
-        }
         activity?.let {
-            setStatusStake(
-                "Total\n$balance",
-                bid.toString(),
-                "WIN\n$win"
+            MinerHelper.updateStatusBalance(
+                slot,
+                FragmentMinerSecondGameBindingImpl(binding)
             )
         }
     }

@@ -9,6 +9,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.forrtun.frreezy.game.R
 import com.forrtun.frreezy.game.model.Slot
 
+interface SlotClickListener {
+    fun onItemClick(position: Int, slot: Slot)
+}
+
 class RecyclerSlotMinerAdapter(
     private var defaultList: List<Slot>,
     private val maxOpenSlot: Int
@@ -70,7 +74,7 @@ class RecyclerSlotMinerAdapter(
 
     override fun getItemCount(): Int = defaultList.size
 
-    fun setSlotMinerClickListener(listener: SlotClickListener) {
+    fun setMinerClickListener(listener: SlotClickListener) {
         itemSlotMinerClickListener = listener
     }
 
