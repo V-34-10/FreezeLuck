@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AnimationUtils
+import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import com.forrtun.frreezy.game.R
 import com.forrtun.frreezy.game.databinding.FragmentWheelFourGameBinding
@@ -15,15 +15,17 @@ import com.forrtun.frreezy.game.view.manager.music.CustomMediaPlayer
 import com.forrtun.frreezy.game.view.manager.stake.UpdateStatusStake.convertStringToNumber
 import com.forrtun.frreezy.game.view.manager.stake.UpdateStatusStake.getStatusStake
 import com.forrtun.frreezy.game.view.manager.stake.UpdateStatusStake.isTotalSave
+import com.forrtun.frreezy.game.view.ui.animation.AnimationUtil
 import com.forrtun.frreezy.game.view.ui.dialog.StatusDialog.runDialog
 import com.forrtun.frreezy.game.view.ui.scene.games.wheels.helpers.FragmentWheelFourGameBindingImpl
 import com.forrtun.frreezy.game.view.ui.scene.games.wheels.helpers.WheelHelper
 
 class WheelFourGameFragment : Fragment() {
     private lateinit var binding: FragmentWheelFourGameBinding
+    private lateinit var backgroundMusic: BackgroundMusicManager
     private val minAngleRotate = 10f
     private val maxAngleRotate = 720f
-    private lateinit var backgroundMusic: BackgroundMusicManager
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -48,34 +50,35 @@ class WheelFourGameFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initControlButton()
+        loadStatusTotal()
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun loadStatusTotal() {
         activity?.let { context ->
             if (isTotalSave()) {
-                val (saveTotal) = getStatusStake(context)
-                val total = convertStringToNumber(saveTotal.toString())
-                binding.textBalance.text = "Total\n$total"
+                getStatusStake(context).let { (total, _, _) ->
+                    total?.let {
+                        binding.textBalance.text = "Total\n${convertStringToNumber(total)}"
+                    }
+                }
             }
         }
     }
 
     private fun initSoundPool() {
         backgroundMusic = BackgroundMusicManager(CustomMediaPlayer())
-        backgroundMusic.loadBackgroundMusic("backgroundMusic", Uri.parse("android.resource://" + requireContext().packageName + "/" + R.raw.kazino_zvuk))
-        backgroundMusic.startMusic(requireContext(),"backgroundMusic", true)
+        backgroundMusic.loadBackgroundMusic(
+            "backgroundMusic",
+            Uri.parse("android.resource://" + requireContext().packageName + "/" + R.raw.kazino_zvuk)
+        )
+        backgroundMusic.startMusic(requireContext(), "backgroundMusic", true)
     }
 
     @SuppressLint("SetTextI18n")
     private fun initControlButton() {
-        val buttonListBet = listOf(
-            binding.btnSetStakeFirst to 50,
-            binding.btnSetStakeSecond to 100,
-            binding.btnSetStakeThree to 150,
-            binding.btnSetStakeFour to 200,
-            binding.btnSetStakeFife to 250,
-            binding.btnSetStakeSix to 300
-        )
-        var animation = AnimationUtils.loadAnimation(context, R.anim.button_animation)
         binding.btnSpin.setOnClickListener {
-            it!!.startAnimation(animation)
+            it.startAnimation(AnimationUtil.loadButtonAnimation(requireContext()))
             if (convertStringToNumber(getString(R.string.default_total_balance)) <= 0) {
                 return@setOnClickListener
             }
@@ -87,16 +90,19 @@ class WheelFourGameFragment : Fragment() {
                 )
             }
         }
-        buttonListBet.forEach { (button, betValue) ->
-            button.setOnClickListener {
-                animation = AnimationUtils.loadAnimation(context, R.anim.button_animation)
-                button.startAnimation(animation)
-                binding.textBet.text = "BET\n$betValue"
-            }
-        }
+        setupBetButtons(
+            listOf(
+                binding.btnSetStakeFirst,
+                binding.btnSetStakeSecond,
+                binding.btnSetStakeThree,
+                binding.btnSetStakeFour,
+                binding.btnSetStakeFife,
+                binding.btnSetStakeSix
+            ),
+            listOf(50, 100, 150, 200, 250, 300)
+        )
         binding.btnBack.setOnClickListener {
-            animation = AnimationUtils.loadAnimation(context, R.anim.button_animation)
-            it.startAnimation(animation)
+            it.startAnimation(AnimationUtil.loadButtonAnimation(requireContext()))
             if (convertStringToNumber(binding.textWin.text.toString()) == 0) {
                 activity?.let { it1 ->
                     runDialog(
@@ -111,6 +117,16 @@ class WheelFourGameFragment : Fragment() {
                         it1, R.layout.dialog_win
                     )
                 }
+            }
+        }
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun setupBetButtons(buttons: List<ImageView>, betValues: List<Int>) {
+        buttons.forEachIndexed { index, button ->
+            button.setOnClickListener {
+                it.startAnimation(AnimationUtil.loadButtonAnimation(requireContext()))
+                binding.textBet.text = "BET\n${betValues[index]}"
             }
         }
     }

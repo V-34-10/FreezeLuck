@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AnimationUtils
 import androidx.fragment.app.Fragment
 import com.forrtun.frreezy.game.R
 import com.forrtun.frreezy.game.databinding.FragmentWheelThreeGameBinding
@@ -17,6 +16,8 @@ import com.forrtun.frreezy.game.view.manager.stake.UpdateStatusStake
 import com.forrtun.frreezy.game.view.manager.stake.UpdateStatusStake.convertStringToNumber
 import com.forrtun.frreezy.game.view.manager.stake.UpdateStatusStake.getStatusStake
 import com.forrtun.frreezy.game.view.manager.stake.UpdateStatusStake.isTotalSave
+import com.forrtun.frreezy.game.view.manager.stake.UpdateStatusStake.setStatusStakeUI
+import com.forrtun.frreezy.game.view.ui.animation.AnimationUtil
 import com.forrtun.frreezy.game.view.ui.dialog.StatusDialog.runDialog
 import com.forrtun.frreezy.game.view.ui.scene.games.wheels.helpers.FragmentWheelThreeGameBindingImpl
 import com.forrtun.frreezy.game.view.ui.scene.games.wheels.helpers.WheelHelper
@@ -24,10 +25,11 @@ import com.forrtun.frreezy.game.view.ui.scene.games.wheels.helpers.WheelHelper
 class WheelThreeGameFragment : Fragment() {
 
     private lateinit var binding: FragmentWheelThreeGameBinding
-    private val minAngleRotate = 0f
-    private val maxAngleRotate = 720f
     private lateinit var managerStatusStake: ManagerStatusStake
     private lateinit var backgroundMusic: BackgroundMusicManager
+    private val minAngleRotate = 0f
+    private val maxAngleRotate = 720f
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -38,8 +40,7 @@ class WheelThreeGameFragment : Fragment() {
                 requireContext(),
                 convertStringToNumber(binding.textBalance.text.toString())
             )
-        UpdateStatusStake.setStatusStakeUI(binding, managerStatusStake)
-        FragmentWheelThreeGameBindingImpl(binding)
+        setStatusStakeUI(binding, managerStatusStake)
         initSoundPool()
         return binding.root
     }
@@ -59,11 +60,18 @@ class WheelThreeGameFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initControlButton()
+        loadStatusTotal()
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun loadStatusTotal() {
         activity?.let { context ->
             if (isTotalSave()) {
-                val (saveTotal) = getStatusStake(context)
-                val total = convertStringToNumber(saveTotal.toString())
-                binding.textBalance.text = "Total\n$total"
+                getStatusStake(context).let { (total, _, _) ->
+                    total?.let {
+                        binding.textBalance.text = "Total\n${convertStringToNumber(total)}"
+                    }
+                }
             }
         }
     }
@@ -78,9 +86,8 @@ class WheelThreeGameFragment : Fragment() {
     }
 
     private fun initControlButton() {
-        var animation = AnimationUtils.loadAnimation(context, R.anim.button_animation)
         binding.btnSpin.setOnClickListener {
-            it!!.startAnimation(animation)
+            it.startAnimation(AnimationUtil.loadButtonAnimation(requireContext()))
             if (convertStringToNumber(getString(R.string.default_total_balance)) <= 0) {
                 return@setOnClickListener
             }
@@ -93,20 +100,17 @@ class WheelThreeGameFragment : Fragment() {
             }
         }
         binding.btnMinus.setOnClickListener {
-            animation = AnimationUtils.loadAnimation(context, R.anim.button_animation)
-            it.startAnimation(animation)
+            it.startAnimation(AnimationUtil.loadButtonAnimation(requireContext()))
             managerStatusStake.decreaseBet()
-            UpdateStatusStake.setStatusStakeUI(binding, managerStatusStake)
+            setStatusStakeUI(binding, managerStatusStake)
         }
         binding.btnPlus.setOnClickListener {
-            animation = AnimationUtils.loadAnimation(context, R.anim.button_animation)
-            it.startAnimation(animation)
+            it.startAnimation(AnimationUtil.loadButtonAnimation(requireContext()))
             managerStatusStake.increaseBet()
-            UpdateStatusStake.setStatusStakeUI(binding, managerStatusStake)
+            setStatusStakeUI(binding, managerStatusStake)
         }
         binding.btnBack.setOnClickListener {
-            animation = AnimationUtils.loadAnimation(context, R.anim.button_animation)
-            it.startAnimation(animation)
+            it.startAnimation(AnimationUtil.loadButtonAnimation(requireContext()))
             if (convertStringToNumber(binding.textWin.text.toString()) == 0) {
                 activity?.let { it1 ->
                     runDialog(
