@@ -8,8 +8,8 @@ import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
 import com.forrtun.frreezy.game.R
 import com.forrtun.frreezy.game.databinding.ActivityPrivacyBinding
-import com.forrtun.frreezy.game.view.ui.menu.MenuActivity
 import com.forrtun.frreezy.game.utils.FullScreen.setFullScreen
+import com.forrtun.frreezy.game.view.ui.menu.MenuActivity
 
 class PrivacyActivity : AppCompatActivity() {
 
@@ -29,8 +29,8 @@ class PrivacyActivity : AppCompatActivity() {
             runMenu()
         }
         binding.btnAccept.setOnClickListener(btnPrivacyListener)
-        binding.textPrivacy.setOnClickListener {
-            binding.textPrivacy.startAnimation(animationClick)
+        binding.textPrivacyLink.setOnClickListener {
+            binding.textPrivacyLink.startAnimation(animationClick)
             runBrowsePrivacy()
         }
     }
