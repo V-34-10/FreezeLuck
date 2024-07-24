@@ -58,17 +58,18 @@ object MinerHelper {
             }
         }
 
-        if (coefficient?.toInt() == 0) {
-            balance -= bid
-            if (balance < 0) {
-                balance = 0
+        coefficient?.let { coeff ->
+            if (coeff.toInt() == 0) {
+                balance -= bid
+                win -= bid
+                if (balance < 0) balance = 0
+                if (win < 0) win = 0
+            } else {
+                val newSumWin = bid * coeff
+                balance += newSumWin.toInt()
+                win += newSumWin.toInt()
             }
             binding.textBalance.text = "Total\n$balance"
-        } else {
-            val newSumWin = bid * coefficient!!
-            balance += newSumWin.toInt()
-            binding.textBalance.text = "Total\n$balance"
-            win += newSumWin.toInt()
             binding.textWin.text = "WIN\n$win"
         }
         setStatusStake(

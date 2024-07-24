@@ -97,10 +97,11 @@ object WheelHelper {
 
         if (coefficient.toInt() == 0) {
             balance -= bet
-            if (balance < 0) {
-                balance = 0
-            }
+            win -= bet
+            if (balance < 0) balance = 0
+            if (win < 0) win = 0
             binding.textBalance.text = "Total\n$balance"
+            binding.textWin.text = "WIN\n$win"
         } else {
             val newSumWin = (bet.toFloat() * coefficient.toFloat()).roundToInt()
             balance += newSumWin
