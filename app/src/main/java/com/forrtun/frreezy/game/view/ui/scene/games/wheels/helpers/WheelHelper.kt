@@ -13,7 +13,8 @@ object WheelHelper {
     fun animRotateWheel(
         binding: GameWheelBinding,
         maxAngleRotate: Float,
-        minAngleRotate: Float
+        minAngleRotate: Float,
+        onAnimationEnd: () -> Unit = {}
     ) {
         val randomAngleRotate =
             minAngleRotate + Random().nextFloat() * (maxAngleRotate - minAngleRotate)
@@ -33,6 +34,8 @@ object WheelHelper {
             override fun onAnimationEnd(animation: Animation?) {
                 currentAngle += randomAngleRotate
                 updateStatusBalance(randomAngleRotate, binding)
+
+                onAnimationEnd()
             }
 
             override fun onAnimationRepeat(animation: Animation?) {}
