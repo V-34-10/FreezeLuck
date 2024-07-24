@@ -29,7 +29,7 @@ class MinerFifeGameFragment : Fragment(), SlotClickListener {
     private lateinit var binding: FragmentMinerFifeGameBinding
     private lateinit var backgroundMusic: BackgroundMusicManager
     private lateinit var slotMinerAdapter: RecyclerSlotMinerAdapter
-
+    private var runGame = false
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -96,6 +96,7 @@ class MinerFifeGameFragment : Fragment(), SlotClickListener {
                     )
                 })
             }
+            runGame = true
         }
         setupBetButtons(
             listOf(
@@ -110,20 +111,24 @@ class MinerFifeGameFragment : Fragment(), SlotClickListener {
         )
         binding.btnBack.setOnClickListener {
             it.startAnimation(AnimationUtil.loadButtonAnimation(requireContext()))
-            if (convertStringToNumber(binding.textWin.text.toString()) == 0) {
-                activity?.let { it1 ->
-                    runDialog(
-                        convertStringToNumber(binding.textWin.text.toString()),
-                        it1, R.layout.dialog_lose
-                    )
+            if (runGame) {
+                if (convertStringToNumber(binding.textWin.text.toString()) == 0) {
+                    activity?.let { it1 ->
+                        runDialog(
+                            convertStringToNumber(binding.textWin.text.toString()),
+                            it1, R.layout.dialog_lose
+                        )
+                    }
+                } else {
+                    activity?.let { it1 ->
+                        runDialog(
+                            convertStringToNumber(binding.textWin.text.toString()),
+                            it1, R.layout.dialog_win
+                        )
+                    }
                 }
             } else {
-                activity?.let { it1 ->
-                    runDialog(
-                        convertStringToNumber(binding.textWin.text.toString()),
-                        it1, R.layout.dialog_win
-                    )
-                }
+                activity?.onBackPressed()
             }
         }
     }

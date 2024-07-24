@@ -35,6 +35,7 @@ class SlotsFirstGameFragment : Fragment() {
     private lateinit var backgroundMusic: BackgroundMusicManager
     private lateinit var slotAdapter: RecyclerSlotAdapter
     private var animationStart = false
+    private var runGame = false
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -142,6 +143,7 @@ class SlotsFirstGameFragment : Fragment() {
             originalSlotMutableList.shuffle()
             slotAdapter.resetSlotList(originalSlotMutableList.map { Slot(it) })
             slotAdapter.setAnimationSpin()
+            runGame = true
         }
         binding.btnMinus.setOnClickListener {
             it.startAnimation(AnimationUtil.loadButtonAnimation(requireContext()))
@@ -155,20 +157,24 @@ class SlotsFirstGameFragment : Fragment() {
         }
         binding.btnBack.setOnClickListener {
             it.startAnimation(AnimationUtil.loadButtonAnimation(requireContext()))
-            if (convertStringToNumber(binding.textWin.text.toString()) == 0) {
-                activity?.let { it1 ->
-                    runDialog(
-                        convertStringToNumber(binding.textWin.text.toString()),
-                        it1, R.layout.dialog_lose
-                    )
+            if (runGame) {
+                if (convertStringToNumber(binding.textWin.text.toString()) == 0) {
+                    activity?.let { it1 ->
+                        runDialog(
+                            convertStringToNumber(binding.textWin.text.toString()),
+                            it1, R.layout.dialog_lose
+                        )
+                    }
+                } else {
+                    activity?.let { it1 ->
+                        runDialog(
+                            convertStringToNumber(binding.textWin.text.toString()),
+                            it1, R.layout.dialog_win
+                        )
+                    }
                 }
             } else {
-                activity?.let { it1 ->
-                    runDialog(
-                        convertStringToNumber(binding.textWin.text.toString()),
-                        it1, R.layout.dialog_win
-                    )
-                }
+                activity?.onBackPressed()
             }
         }
     }

@@ -32,7 +32,7 @@ class MinerSecondGameFragment : Fragment(), SlotClickListener {
     private lateinit var managerStatusStake: ManagerStatusStake
     private lateinit var backgroundMusic: BackgroundMusicManager
     private lateinit var slotMinerAdapter: RecyclerSlotMinerAdapter
-
+    private var runGame = false
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -97,7 +97,14 @@ class MinerSecondGameFragment : Fragment(), SlotClickListener {
             if (convertStringToNumber(getString(R.string.default_total)) <= 0) {
                 return@setOnClickListener
             }
-            binding.sceneSlots.let { slotMinerAdapter.updateSlotList(originalSlotMutableList.map { Slot(it) }) }
+            binding.sceneSlots.let {
+                slotMinerAdapter.updateSlotList(originalSlotMutableList.map {
+                    Slot(
+                        it
+                    )
+                })
+            }
+            runGame = true
         }
         binding.btnMinus.setOnClickListener {
             it.startAnimation(AnimationUtil.loadButtonAnimation(requireContext()))
@@ -111,20 +118,24 @@ class MinerSecondGameFragment : Fragment(), SlotClickListener {
         }
         binding.btnBack.setOnClickListener {
             it.startAnimation(AnimationUtil.loadButtonAnimation(requireContext()))
-            if (convertStringToNumber(binding.textWin.text.toString()) == 0) {
-                activity?.let { it1 ->
-                    runDialog(
-                        convertStringToNumber(binding.textWin.text.toString()),
-                        it1, R.layout.dialog_lose
-                    )
+            if (runGame) {
+                if (convertStringToNumber(binding.textWin.text.toString()) == 0) {
+                    activity?.let { it1 ->
+                        runDialog(
+                            convertStringToNumber(binding.textWin.text.toString()),
+                            it1, R.layout.dialog_lose
+                        )
+                    }
+                } else {
+                    activity?.let { it1 ->
+                        runDialog(
+                            convertStringToNumber(binding.textWin.text.toString()),
+                            it1, R.layout.dialog_win
+                        )
+                    }
                 }
             } else {
-                activity?.let { it1 ->
-                    runDialog(
-                        convertStringToNumber(binding.textWin.text.toString()),
-                        it1, R.layout.dialog_win
-                    )
-                }
+                activity?.onBackPressed()
             }
         }
     }

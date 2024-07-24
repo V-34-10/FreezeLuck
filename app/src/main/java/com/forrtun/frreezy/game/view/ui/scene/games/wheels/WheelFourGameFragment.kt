@@ -25,7 +25,7 @@ class WheelFourGameFragment : Fragment() {
     private lateinit var backgroundMusic: BackgroundMusicManager
     private val minAngleRotate = 10f
     private val maxAngleRotate = 720f
-
+    private var runGame = false
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -89,6 +89,7 @@ class WheelFourGameFragment : Fragment() {
                     minAngleRotate
                 )
             }
+            runGame = true
         }
         setupBetButtons(
             listOf(
@@ -103,20 +104,24 @@ class WheelFourGameFragment : Fragment() {
         )
         binding.btnBack.setOnClickListener {
             it.startAnimation(AnimationUtil.loadButtonAnimation(requireContext()))
-            if (convertStringToNumber(binding.textWin.text.toString()) == 0) {
-                activity?.let { it1 ->
-                    runDialog(
-                        convertStringToNumber(binding.textWin.text.toString()),
-                        it1, R.layout.dialog_lose
-                    )
+            if (runGame) {
+                if (convertStringToNumber(binding.textWin.text.toString()) == 0) {
+                    activity?.let { it1 ->
+                        runDialog(
+                            convertStringToNumber(binding.textWin.text.toString()),
+                            it1, R.layout.dialog_lose
+                        )
+                    }
+                } else {
+                    activity?.let { it1 ->
+                        runDialog(
+                            convertStringToNumber(binding.textWin.text.toString()),
+                            it1, R.layout.dialog_win
+                        )
+                    }
                 }
             } else {
-                activity?.let { it1 ->
-                    runDialog(
-                        convertStringToNumber(binding.textWin.text.toString()),
-                        it1, R.layout.dialog_win
-                    )
-                }
+                activity?.onBackPressed()
             }
         }
     }
