@@ -47,6 +47,12 @@ class SettingsActivity : AppCompatActivity() {
         val maxMusic = audioManager.getStreamMaxVolume(AudioManager.STREAM_RING)
         binding.seekBarMusic.max = maxMusic
 
+        val currentMusicVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
+        val currentSoundVolume = audioManager.getStreamVolume(AudioManager.STREAM_RING)
+
+        binding.seekBarMusic.progress = currentMusicVolume
+        binding.seekBarSound.progress = currentSoundVolume
+
         binding.seekBarSound.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             var progressChanged = false
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
