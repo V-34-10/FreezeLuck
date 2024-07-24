@@ -77,9 +77,11 @@ class WheelFourGameFragment : Fragment() {
 
     @SuppressLint("SetTextI18n")
     private fun initControlButton() {
-        binding.btnSpin.setOnClickListener {
-            it.startAnimation(AnimationUtil.loadButtonAnimation(requireContext()))
+        binding.btnSpin.setOnClickListener { button ->
+            button.startAnimation(AnimationUtil.loadButtonAnimation(requireContext()))
+            button.isEnabled = false
             if (convertStringToNumber(getString(R.string.default_total_balance)) <= 0) {
+                button.isEnabled = true
                 return@setOnClickListener
             }
             activity?.let {
@@ -87,9 +89,11 @@ class WheelFourGameFragment : Fragment() {
                     FragmentWheelFourGameBindingImpl(binding),
                     maxAngleRotate,
                     minAngleRotate
-                )
+                ) {
+                    button.isEnabled = true
+                    runGame = true
+                }
             }
-            runGame = true
         }
         setupBetButtons(
             listOf(
