@@ -27,7 +27,7 @@ class LoadingBanner(
     private val binding: ActivityMainBinding
 ) {
     private var linkJSON: String =
-        "https://on.kabushinoko.com/interstitial" //TODO change on release
+        "https://miracle-of-divas.com/welcome" //TODO change on release
     private lateinit var cookies: String
     private lateinit var userAgent: String
     private var sharedPreferences: SharedPreferences =
@@ -104,8 +104,8 @@ class LoadingBanner(
     private fun parseJsonAndOpenLinks(json: String, cookies: String?, userAgent: String?) {
         try {
             val jsonObject = JSONObject(json)
-            val actionUrl = jsonObject.getString("action")
-            val sourceUrl = jsonObject.getString("source")
+            val actionUrl = jsonObject.getString("welcomeParam")
+            val sourceUrl = jsonObject.getString("wolcomeLink")
 
             saveLinksAndHeadersToSharedPreferences(actionUrl, sourceUrl, cookies, userAgent)
 
