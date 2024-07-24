@@ -49,13 +49,11 @@ class MenuGamesActivity : AppCompatActivity() {
                         SceneActivity::class.java
                     ).putExtra("ButtonNameGame", listGames[i])
                 )
-                finish()
             }
         }
         binding.btnSettings.setOnClickListener {
             binding.btnSettings.startAnimation(animationClick)
             startActivity(Intent(this@MenuGamesActivity, SettingsActivity::class.java))
-            finish()
         }
         binding.btnExit.setOnClickListener {
             binding.btnExit.startAnimation(animationClick)

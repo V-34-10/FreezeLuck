@@ -11,8 +11,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.forrtun.frreezy.game.R
 import com.forrtun.frreezy.game.databinding.ActivitySettingsBinding
-import com.forrtun.frreezy.game.view.ui.menu.MenuGamesActivity
 import com.forrtun.frreezy.game.utils.FullScreen.setFullScreen
+import com.forrtun.frreezy.game.view.ui.menu.MenuGamesActivity
 
 class SettingsActivity : AppCompatActivity() {
 
@@ -35,7 +35,8 @@ class SettingsActivity : AppCompatActivity() {
         }
         binding.btnBack.setOnClickListener {
             it.startAnimation(animationClick)
-            onBackPressed()
+            startActivity(Intent(this@SettingsActivity, MenuGamesActivity::class.java))
+            finish()
         }
     }
 
@@ -96,7 +97,5 @@ class SettingsActivity : AppCompatActivity() {
     @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
         super.onBackPressed()
-        startActivity(Intent(this@SettingsActivity, MenuGamesActivity::class.java))
-        finish()
     }
 }
