@@ -10,6 +10,7 @@ import kotlin.math.roundToInt
 
 object WheelHelper {
     private var currentAngle = 0f
+    private const val FULL_ROTATION_ANGLE = 360f
     fun animRotateWheel(
         binding: GameWheelBinding,
         maxAngleRotate: Float,
@@ -18,13 +19,17 @@ object WheelHelper {
     ) {
         val randomAngleRotate =
             minAngleRotate + Random().nextFloat() * (maxAngleRotate - minAngleRotate)
+        val numFullRotations = 2 + Random().nextInt(3)
+        val totalRotationAngle = numFullRotations * FULL_ROTATION_ANGLE + randomAngleRotate
+        val animationDuration = (2000 * (totalRotationAngle / FULL_ROTATION_ANGLE)).toLong()
         val rotationAnimation = RotateAnimation(
             currentAngle,
-            randomAngleRotate,
+            //randomAngleRotate,
+            currentAngle + totalRotationAngle,
             Animation.RELATIVE_TO_SELF, 0.5f,
             Animation.RELATIVE_TO_SELF, 0.5f
         ).apply {
-            duration = 2000
+            duration = animationDuration //2000
             fillAfter = true
             setAnimationListener(null)
         }
@@ -32,7 +37,8 @@ object WheelHelper {
             override fun onAnimationStart(animation: Animation?) {}
 
             override fun onAnimationEnd(animation: Animation?) {
-                currentAngle += randomAngleRotate
+                //currentAngle += randomAngleRotate
+                currentAngle = (currentAngle + totalRotationAngle) % 360f
                 updateStatusBalance(randomAngleRotate, binding)
 
                 onAnimationEnd()
@@ -50,7 +56,7 @@ object WheelHelper {
 
     private fun getWinCoefficient(angleRotate: Float): Int {
         return when (convertAngleToDegree(angleRotate)) {
-            in 0f..36f -> 2 // 2x
+            /*in 0f..36f -> 2 // 2x
             in 36f..72f -> 3 // 3x
             in 72f..108f -> 1 // 1x
             in 108f..144f -> 2 // 2x
@@ -62,13 +68,24 @@ object WheelHelper {
             in 324f..360f -> 4 // 4x
             else -> {
                 return 1
-            }
+            }*/
+            in 0f..36f -> 4 // 4x
+            in 36f..72f -> 0 // 0x
+            in 72f..108f -> 1 // 1x
+            in 108f..144f -> 0 // 0x
+            in 144f..180f -> 4 // 4x
+            in 180f..216f -> 2 // 2x
+            in 216f..252f -> 2 // 2x
+            in 252f..288f -> 1 // 1x
+            in 288f..324f -> 3 // 3x
+            in 324f..360f -> 2 // 2x
+            else -> 1
         }
     }
 
     private fun getWinSecondCoefficient(angleRotate: Float): Float {
         return when (convertAngleToDegree(angleRotate)) {
-            in 0f..36f -> 1.5f // 1.5x
+            /*in 0f..36f -> 1.5f // 1.5x
             in 36f..72f -> 1.0f // 1x
             in 72f..108f -> 3.0f // 3x
             in 108f..144f -> 5.0f // 5x
@@ -80,7 +97,18 @@ object WheelHelper {
             in 324f..360f -> 1.0f // 1x
             else -> {
                 return 1.0f
-            }
+            }*/
+            in 0f..36f -> 1f // 1x
+            in 36f..72f -> 3f // 3x
+            in 72f..108f -> 5f // 5x
+            in 108f..144f -> 1.5f // 1.5x
+            in 144f..180f -> 1.5f // 1.5x
+            in 180f..216f -> 5f // 5x
+            in 216f..252f -> 3f // 3x
+            in 252f..288f -> 1f // 1x
+            in 288f..324f -> 0f // 0x
+            in 324f..360f -> 1.5f // 1.5x
+            else -> 1.0f
         }
     }
 
