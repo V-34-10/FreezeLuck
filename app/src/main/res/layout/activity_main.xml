@@ -22,7 +22,7 @@
     <ImageView
         android:id="@+id/sourceBanner"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:contentDescription="@string/sourcebanner"
         android:scaleType="centerCrop"
         android:visibility="gone"
