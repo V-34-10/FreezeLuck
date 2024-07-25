@@ -18,4 +18,6 @@
     <dimen name="sp10">10sp</dimen>
     <dimen name="dp5">5dp</dimen>
     <dimen name="vertical_spacing">-25dp</dimen>
+    <dimen name="dp13">13dp</dimen>
+    <dimen name="dp8">8dp</dimen>
 </resources>
