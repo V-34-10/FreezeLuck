@@ -19,8 +19,8 @@ object WheelHelper {
     ) {
         val randomAngleRotate =
             minAngleRotate + Random().nextFloat() * (maxAngleRotate - minAngleRotate)
-        val numFullRotations = 2 + Random().nextInt(3)
-        val totalRotationAngle = numFullRotations * FULL_ROTATION_ANGLE + randomAngleRotate
+        //val numFullRotations = 2 + Random().nextInt(3)
+        val totalRotationAngle = /*numFullRotations * */FULL_ROTATION_ANGLE + randomAngleRotate
         val animationDuration = (2000 * (totalRotationAngle / FULL_ROTATION_ANGLE)).toLong()
         val rotationAnimation = RotateAnimation(
             currentAngle,
@@ -30,7 +30,7 @@ object WheelHelper {
             Animation.RELATIVE_TO_SELF, 0.5f
         ).apply {
             duration = animationDuration //2000
-            fillAfter = true
+            fillAfter = false
             setAnimationListener(null)
         }
         rotationAnimation.setAnimationListener(object : Animation.AnimationListener {
@@ -38,7 +38,8 @@ object WheelHelper {
 
             override fun onAnimationEnd(animation: Animation?) {
                 //currentAngle += randomAngleRotate
-                currentAngle = (currentAngle + totalRotationAngle) % 360f
+                //currentAngle = (currentAngle + totalRotationAngle) % 360f
+                currentAngle = 0f
                 updateStatusBalance(randomAngleRotate, binding)
 
                 onAnimationEnd()
@@ -69,7 +70,20 @@ object WheelHelper {
             else -> {
                 return 1
             }*/
-            in 0f..36f -> 4 // 4x
+            in 0f..30f -> 2 // 2x
+            in 35f..70f -> 3 // 3x
+            in 75f..105f -> 1 // 1x
+            in 110f..140f -> 2 // 2x
+            in 145f..175f -> 2 // 2x
+            in 180f..210f -> 4 // 4x
+            in 216f..245f -> 0 // 0x
+            in 255f..285f -> 1 // 1x
+            in 290f..320f -> 0 // 0x
+            in 325f..360f -> 4 // 4x
+            else -> {
+                return 1
+            }
+            /*in 0f..36f -> 4 // 4x
             in 36f..72f -> 0 // 0x
             in 72f..108f -> 1 // 1x
             in 108f..144f -> 0 // 0x
@@ -79,7 +93,18 @@ object WheelHelper {
             in 252f..288f -> 1 // 1x
             in 288f..324f -> 3 // 3x
             in 324f..360f -> 2 // 2x
-            else -> 1
+            else -> 1*/
+            /*in 0f..36f -> 2 // 2x
+            in 36f..72f -> 4 // 4x
+            in 72f..108f -> 0 // 0x
+            in 108f..144f -> 1 // 1x
+            in 144f..180f -> 0 // 0x
+            in 180f..216f -> 4 // 4x
+            in 216f..252f -> 2 // 2x
+            in 252f..288f -> 2 // 2x
+            in 288f..324f -> 1 // 1x
+            in 324f..360f -> 3 // 3x
+            else -> 1*/
         }
     }
 
@@ -98,7 +123,20 @@ object WheelHelper {
             else -> {
                 return 1.0f
             }*/
-            in 0f..36f -> 1f // 1x
+            in 0f..35f -> 1.5f // 1.5x
+            in 36f..70f -> 1.0f // 1x
+            in 75f..105f -> 3.0f // 3x
+            in 110f..140f -> 5.0f // 5x
+            in 145f..180f -> 1.5f // 1.5x
+            in 182f..215f -> 0.0f // 0x
+            in 220f..250f -> 1.5f // 1.5x
+            in 255f..285f -> 5.0f // 5x
+            in 290f..320f -> 3.0f // 3x
+            in 325f..360f -> 1.0f // 1x
+            else -> {
+                return 1.0f
+            }
+            /*in 0f..36f -> 1f // 1x
             in 36f..72f -> 3f // 3x
             in 72f..108f -> 5f // 5x
             in 108f..144f -> 1.5f // 1.5x
@@ -108,7 +146,18 @@ object WheelHelper {
             in 252f..288f -> 1f // 1x
             in 288f..324f -> 0f // 0x
             in 324f..360f -> 1.5f // 1.5x
-            else -> 1.0f
+            else -> 1.0f*/
+            /*in 0f..36f -> 1.5f // 1.5x
+            in 36f..72f -> 0f // 0x
+            in 72f..108f -> 1.5f // 1.5x
+            in 108f..144f -> 5f // 5x
+            in 144f..180f -> 3f // 3x
+            in 180f..216f -> 1.5f // 1.5x
+            in 216f..252f -> 1f // 1x
+            in 252f..288f -> 3f // 3x
+            in 288f..324f -> 5f // 5x
+            in 324f..360f -> 1f // 1x
+            else -> 1.0f*/
         }
     }
 
