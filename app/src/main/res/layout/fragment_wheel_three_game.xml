@@ -31,7 +31,7 @@
         <TextView
             android:id="@+id/text_win"
             android:layout_width="100dp"
-            android:layout_height="50dp"
+            android:layout_height="55dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="10dp"
             android:background="@drawable/background_win_three"
@@ -50,7 +50,7 @@
         <TextView
             android:id="@+id/text_balance"
             android:layout_width="100dp"
-            android:layout_height="50dp"
+            android:layout_height="55dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="30dp"
             android:background="@drawable/background_win_three"
