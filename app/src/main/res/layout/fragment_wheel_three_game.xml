@@ -123,7 +123,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/scene_game"
             android:layout_width="240dp"
-            android:layout_height="wrap_content"
+            android:layout_height="300dp"
             android:layout_marginTop="50dp"
             android:layout_marginEnd="20dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -135,7 +135,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:contentDescription="@string/wheel_scene"
-                android:src="@drawable/wheel"
+                android:src="@drawable/wheel_2"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -151,6 +151,18 @@
                 app:layout_constraintEnd_toEndOf="@+id/wheel"
                 app:layout_constraintStart_toStartOf="@+id/wheel"
                 app:layout_constraintTop_toTopOf="@+id/wheel" />
+
+            <ImageView
+                android:id="@+id/win_coeff"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:contentDescription="@string/arrow_wheel"
+                android:src="@drawable/circle_win_1"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@+id/arrow"
+                app:layout_constraintEnd_toEndOf="@+id/wheel"
+                app:layout_constraintStart_toStartOf="@+id/wheel" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
