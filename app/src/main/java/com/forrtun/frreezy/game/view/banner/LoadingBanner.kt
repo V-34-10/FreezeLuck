@@ -36,9 +36,9 @@ class LoadingBanner(
     private var isTimeUp = false
     private var latch = CountDownLatch(1)
     fun fetchInterstitialData() {
-
+        latch = CountDownLatch(1)
         val client = OkHttpClient.Builder()
-            .callTimeout(5, TimeUnit.SECONDS)
+            .callTimeout(10, TimeUnit.SECONDS)
             .build()
         val request = Request.Builder()
             .url(linkJSON)
@@ -73,7 +73,7 @@ class LoadingBanner(
                 latch.countDown()
             }
         })
-        if (!latch.await(5, TimeUnit.SECONDS)) {
+        if (!latch.await(10, TimeUnit.SECONDS)) {
             isTimeUp = true
             call?.cancel()
             runPrivacyActivity()
@@ -135,8 +135,9 @@ class LoadingBanner(
         cookies: String?,
         userAgent: String?
     ) {
+        latch = CountDownLatch(1)
         val client = OkHttpClient.Builder()
-            .callTimeout(5, TimeUnit.SECONDS)
+            .callTimeout(10, TimeUnit.SECONDS)
             .build()
         val request = Request.Builder()
             .url(imageUrl)
@@ -171,7 +172,7 @@ class LoadingBanner(
                 latch.countDown()
             }
         })
-        if (!latch.await(5, TimeUnit.SECONDS)) {
+        if (!latch.await(10, TimeUnit.SECONDS)) {
             isTimeUp = true
             call?.cancel()
             runPrivacyActivity()
