@@ -10,6 +10,7 @@ interface GameWheelBinding {
     val textWin: TextView
     val textBalance: TextView
     val wheel: ImageView
+    val winCoeff: ImageView
 }
 
 class FragmentWheelThreeGameBindingImpl(private val binding: FragmentWheelThreeGameBinding) :
@@ -23,6 +24,9 @@ class FragmentWheelThreeGameBindingImpl(private val binding: FragmentWheelThreeG
 
     override val wheel: ImageView
         get() = binding.wheel
+
+    override val winCoeff: ImageView
+        get() = binding.winCoeff
 }
 
 class FragmentWheelFourGameBindingImpl(private val binding: FragmentWheelFourGameBinding) :
@@ -36,4 +40,7 @@ class FragmentWheelFourGameBindingImpl(private val binding: FragmentWheelFourGam
 
     override val wheel: ImageView
         get() = binding.wheel
+
+    override val winCoeff: ImageView
+        get() = binding.winCoeff
 }
