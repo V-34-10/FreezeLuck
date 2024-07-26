@@ -23,7 +23,7 @@ import com.forrtun.frreezy.game.view.ui.scene.games.wheels.helpers.WheelHelper
 class WheelFourGameFragment : Fragment() {
     private lateinit var binding: FragmentWheelFourGameBinding
     private lateinit var backgroundMusic: BackgroundMusicManager
-    private val minAngleRotate = 0f
+    private val minAngleRotate = 360f
     private val maxAngleRotate = 720f
     private var runGame = false
     override fun onCreateView(
