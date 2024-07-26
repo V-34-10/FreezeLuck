@@ -27,7 +27,7 @@ class WheelThreeGameFragment : Fragment() {
     private lateinit var binding: FragmentWheelThreeGameBinding
     private lateinit var managerStatusStake: ManagerStatusStake
     private lateinit var backgroundMusic: BackgroundMusicManager
-    private val minAngleRotate = 0f
+    private val minAngleRotate = 360f
     private val maxAngleRotate = 720f
     private var runGame = false
     override fun onCreateView(
@@ -93,6 +93,7 @@ class WheelThreeGameFragment : Fragment() {
                 button.isEnabled = true
                 return@setOnClickListener
             }
+            binding.winCoeff.visibility = View.GONE
             activity?.let {
                 WheelHelper.animRotateWheel(
                     FragmentWheelThreeGameBindingImpl(binding),
