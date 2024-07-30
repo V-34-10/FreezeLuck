@@ -84,6 +84,7 @@ class WheelFourGameFragment : Fragment() {
                 button.isEnabled = true
                 return@setOnClickListener
             }
+            binding.winCoeff.visibility = View.GONE
             activity?.let {
                 WheelHelper.animRotateWheel(
                     FragmentWheelFourGameBindingImpl(binding),
