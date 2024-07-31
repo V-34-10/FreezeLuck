@@ -135,7 +135,6 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:contentDescription="@string/wheel_scene"
-                android:rotation="-25"
                 android:src="@drawable/wheel_2"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
