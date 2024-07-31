@@ -1,46 +1,43 @@
 package com.forrtun.frreezy.game.view.ui.scene.games.wheels.helpers
 
 import android.annotation.SuppressLint
+import android.view.View
 import android.view.animation.Animation
 import android.view.animation.RotateAnimation
+import com.forrtun.frreezy.game.R
 import com.forrtun.frreezy.game.view.manager.stake.UpdateStatusStake.convertStringToNumber
 import com.forrtun.frreezy.game.view.manager.stake.UpdateStatusStake.setStatusStake
 import java.util.Random
 import kotlin.math.roundToInt
 
+data class SectorResult(val coefficient: Float, val centralAngle: Float)
+
 object WheelHelper {
     private var currentAngle = 0f
-    private const val FULL_ROTATION_ANGLE = 360f
     fun animRotateWheel(
         binding: GameWheelBinding,
-        maxAngleRotate: Float,
-        minAngleRotate: Float,
         onAnimationEnd: () -> Unit = {}
     ) {
-        val randomAngleRotate =
-            minAngleRotate + Random().nextFloat() * (maxAngleRotate - minAngleRotate)
-        //val numFullRotations = 2 + Random().nextInt(3)
-        val totalRotationAngle = /*numFullRotations * */FULL_ROTATION_ANGLE + randomAngleRotate
-        val animationDuration = (2000 * (totalRotationAngle / FULL_ROTATION_ANGLE)).toLong()
+        val randomTargetAngle = getRandomAngle(binding)
+        val targetAngle = currentAngle + 360f + randomTargetAngle
         val rotationAnimation = RotateAnimation(
             currentAngle,
-            //randomAngleRotate,
-            currentAngle + totalRotationAngle,
+            targetAngle,
             Animation.RELATIVE_TO_SELF, 0.5f,
             Animation.RELATIVE_TO_SELF, 0.5f
         ).apply {
-            duration = animationDuration //2000
-            fillAfter = false
+            duration = 2000
+            fillAfter = true
             setAnimationListener(null)
         }
         rotationAnimation.setAnimationListener(object : Animation.AnimationListener {
             override fun onAnimationStart(animation: Animation?) {}
 
             override fun onAnimationEnd(animation: Animation?) {
-                //currentAngle += randomAngleRotate
-                //currentAngle = (currentAngle + totalRotationAngle) % 360f
-                currentAngle = 0f
-                updateStatusBalance(randomAngleRotate, binding)
+                currentAngle = (targetAngle) % 360f
+
+                val sectorResult = getWinCoefficientInSector(currentAngle, binding)
+                updateStatusBalance(sectorResult.coefficient, binding)
 
                 onAnimationEnd()
             }
@@ -55,109 +52,106 @@ object WheelHelper {
         return if (degree < 0) degree + 360 else degree
     }
 
-    private fun getWinCoefficient(angleRotate: Float): Int {
-        return when (convertAngleToDegree(angleRotate)) {
-            /*in 0f..36f -> 2 // 2x
-            in 36f..72f -> 3 // 3x
-            in 72f..108f -> 1 // 1x
-            in 108f..144f -> 2 // 2x
-            in 144f..180f -> 2 // 2x
-            in 180f..216f -> 4 // 4x
-            in 216f..252f -> 0 // 0x
-            in 252f..288f -> 1 // 1x
-            in 288f..324f -> 0 // 0x
-            in 324f..360f -> 4 // 4x
-            else -> {
-                return 1
-            }*/
-            in 0f..30f -> 2 // 2x
-            in 35f..70f -> 3 // 3x
-            in 75f..105f -> 1 // 1x
-            in 110f..140f -> 2 // 2x
-            in 145f..175f -> 2 // 2x
-            in 180f..210f -> 4 // 4x
-            in 216f..245f -> 0 // 0x
-            in 255f..285f -> 1 // 1x
-            in 290f..320f -> 0 // 0x
-            in 325f..360f -> 4 // 4x
-            else -> {
-                return 1
+    private fun getRandomAngle(binding: GameWheelBinding): Float {
+        return when (binding) {
+            is FragmentWheelThreeGameBindingImpl -> {
+                when (Random().nextInt(8)) {
+                    0 -> 0f
+                    1 -> 45f
+                    2 -> 90f
+                    3 -> 135f
+                    4 -> 180f
+                    5 -> 225f
+                    6 -> 270f
+                    7 -> 315f
+                    else -> 0f
+                }
             }
-            /*in 0f..36f -> 4 // 4x
-            in 36f..72f -> 0 // 0x
-            in 72f..108f -> 1 // 1x
-            in 108f..144f -> 0 // 0x
-            in 144f..180f -> 4 // 4x
-            in 180f..216f -> 2 // 2x
-            in 216f..252f -> 2 // 2x
-            in 252f..288f -> 1 // 1x
-            in 288f..324f -> 3 // 3x
-            in 324f..360f -> 2 // 2x
-            else -> 1*/
-            /*in 0f..36f -> 2 // 2x
-            in 36f..72f -> 4 // 4x
-            in 72f..108f -> 0 // 0x
-            in 108f..144f -> 1 // 1x
-            in 144f..180f -> 0 // 0x
-            in 180f..216f -> 4 // 4x
-            in 216f..252f -> 2 // 2x
-            in 252f..288f -> 2 // 2x
-            in 288f..324f -> 1 // 1x
-            in 324f..360f -> 3 // 3x
-            else -> 1*/
+            is FragmentWheelFourGameBindingImpl -> {
+                when (Random().nextInt(10)) {
+                    0 -> 15f
+                    1 -> 50f
+                    2 -> 90f
+                    3 -> 125f
+                    4 -> 165f
+                    5 -> 195f
+                    6 -> 235f
+                    7 -> 270f
+                    8 -> 305f
+                    9 -> 345f
+                    else -> 0f
+                }
+            }
+            else -> 0f
         }
     }
 
-    private fun getWinSecondCoefficient(angleRotate: Float): Float {
-        return when (convertAngleToDegree(angleRotate)) {
-            /*in 0f..36f -> 1.5f // 1.5x
-            in 36f..72f -> 1.0f // 1x
-            in 72f..108f -> 3.0f // 3x
-            in 108f..144f -> 5.0f // 5x
-            in 144f..180f -> 1.5f // 1.5x
-            in 180f..216f -> 0.0f // 0x
-            in 216f..252f -> 1.5f // 1.5x
-            in 252f..288f -> 5.0f // 5x
-            in 288f..324f -> 3.0f // 3x
-            in 324f..360f -> 1.0f // 1x
-            else -> {
-                return 1.0f
-            }*/
-            in 0f..35f -> 1.5f // 1.5x
-            in 36f..70f -> 1.0f // 1x
-            in 75f..105f -> 3.0f // 3x
-            in 110f..140f -> 5.0f // 5x
-            in 145f..180f -> 1.5f // 1.5x
-            in 182f..215f -> 0.0f // 0x
-            in 220f..250f -> 1.5f // 1.5x
-            in 255f..285f -> 5.0f // 5x
-            in 290f..320f -> 3.0f // 3x
-            in 325f..360f -> 1.0f // 1x
-            else -> {
-                return 1.0f
+    private fun getWinCoefficientInSector(angleRotate: Float, binding: GameWheelBinding): SectorResult {
+        return when (binding) {
+            is FragmentWheelThreeGameBindingImpl -> {
+                when (convertAngleToDegree(angleRotate)) {
+                    in 0f..20f, in 335f..360f -> SectorResult(4.0f, 0f) // 4x,
+                    in 21f..64f -> SectorResult(2.0f, 45f) // 2x, кут 45
+                    in 65f..109f -> SectorResult(3.0f, 90f) // 3x, кут 90
+                    in 110f..154f -> SectorResult(2.0f, 125f) // 2x, кут 135
+                    in 155f..199f -> SectorResult(2.0f, 180f) // 2x, кут 180
+                    in 200f..239f -> SectorResult(4.0f, 220f) // 4x, кут 225
+                    in 244f..284f -> SectorResult(0.0f, 260f) // 0x, кут 270
+                    in 285f..330f -> SectorResult(0.0f, 310f) // 0x, кут 315
+                    else -> {
+                        SectorResult(0.0f, 0f)
+                    }
+                }
             }
-            /*in 0f..36f -> 1f // 1x
-            in 36f..72f -> 3f // 3x
-            in 72f..108f -> 5f // 5x
-            in 108f..144f -> 1.5f // 1.5x
-            in 144f..180f -> 1.5f // 1.5x
-            in 180f..216f -> 5f // 5x
-            in 216f..252f -> 3f // 3x
-            in 252f..288f -> 1f // 1x
-            in 288f..324f -> 0f // 0x
-            in 324f..360f -> 1.5f // 1.5x
-            else -> 1.0f*/
-            /*in 0f..36f -> 1.5f // 1.5x
-            in 36f..72f -> 0f // 0x
-            in 72f..108f -> 1.5f // 1.5x
-            in 108f..144f -> 5f // 5x
-            in 144f..180f -> 3f // 3x
-            in 180f..216f -> 1.5f // 1.5x
-            in 216f..252f -> 1f // 1x
-            in 252f..288f -> 3f // 3x
-            in 288f..324f -> 5f // 5x
-            in 324f..360f -> 1f // 1x
-            else -> 1.0f*/
+
+            is FragmentWheelFourGameBindingImpl -> {
+                when (convertAngleToDegree(angleRotate)) {
+                    in 0f..35f -> SectorResult(1.5f, 15f)  // 1.5x
+                    in 36f..73f -> SectorResult(1.0f, 50f) // 1x
+                    in 74f..108f -> SectorResult(3.0f, 90f) // 3x
+                    in 109f..144f -> SectorResult(5.0f, 125f) // 5x
+                    in 145f..181f -> SectorResult(1.5f, 165f) // 1.5x
+                    in 182f..217f -> SectorResult(0.0f, 195f)  // 0x
+                    in 218f..253f -> SectorResult(1.5f, 235f) // 1.5x
+                    in 254f..284f -> SectorResult(5.0f, 270f) // 5x
+                    in 285f..323f -> SectorResult(3.0f, 305f) // 3x
+                    in 324f..360f -> SectorResult(1.0f, 345f) // 1x
+                    else -> {
+                        SectorResult(0.0f, 0f)
+                    }
+                }
+            }
+
+            else ->  SectorResult(0.0f, 0f)
+
+        }
+    }
+
+    private fun setWinStatus(binding: GameWheelBinding, coefficient: Float) {
+        when (binding) {
+            is FragmentWheelThreeGameBindingImpl -> {
+                binding.winCoeff.visibility = View.VISIBLE
+                val imageResource = when (coefficient) {
+                    4.0f -> R.drawable.circle_win_1
+                    3.0f -> R.drawable.circle_win_2
+                    0.0f -> R.drawable.circle_win_3
+                    2.0f -> R.drawable.circle_win_4
+                    else -> R.drawable.circle_win_default
+                }
+                binding.winCoeff.setImageResource(imageResource)
+            }
+            is FragmentWheelFourGameBindingImpl -> {
+                binding.winCoeff.visibility = View.VISIBLE
+                val imageResource = when (coefficient) {
+                    1.0f -> R.drawable.circle_win_8
+                    3.0f -> R.drawable.circle_win_2
+                    0.0f -> R.drawable.circle_win_3
+                    1.5f -> R.drawable.circle_win_9
+                    5.0f -> R.drawable.circle_win_10
+                    else -> R.drawable.circle_win_default
+                }
+                binding.winCoeff.setImageResource(imageResource)
+            }
         }
     }
 
@@ -167,15 +161,9 @@ object WheelHelper {
         var win = convertStringToNumber(binding.textWin.text.toString())
         var balance = convertStringToNumber(binding.textBalance.text.toString())
 
-        val coefficient = when (binding) {
-            is FragmentWheelFourGameBindingImpl -> getWinSecondCoefficient(angle)
-            is FragmentWheelThreeGameBindingImpl -> getWinCoefficient(angle)
-            else -> {
-                0.0f
-            }
-        }
+        setWinStatus(binding, angle)
 
-        if (coefficient.toInt() == 0) {
+        if (angle.toInt() == 0) {
             balance -= bet
             win -= bet
             if (balance < 0) balance = 0
@@ -183,7 +171,7 @@ object WheelHelper {
             binding.textBalance.text = "Total\n$balance"
             binding.textWin.text = "WIN\n$win"
         } else {
-            val newSumWin = (bet.toFloat() * coefficient.toFloat()).roundToInt()
+            val newSumWin = (bet.toFloat() * angle.toFloat()).roundToInt()
             balance += newSumWin
             binding.textBalance.text = "Total\n$balance"
             win += newSumWin
