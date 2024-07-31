@@ -23,8 +23,6 @@ import com.forrtun.frreezy.game.view.ui.scene.games.wheels.helpers.WheelHelper
 class WheelFourGameFragment : Fragment() {
     private lateinit var binding: FragmentWheelFourGameBinding
     private lateinit var backgroundMusic: BackgroundMusicManager
-    private val minAngleRotate = 360f
-    private val maxAngleRotate = 720f
     private var runGame = false
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -87,9 +85,7 @@ class WheelFourGameFragment : Fragment() {
             binding.winCoeff.visibility = View.GONE
             activity?.let {
                 WheelHelper.animRotateWheel(
-                    FragmentWheelFourGameBindingImpl(binding),
-                    maxAngleRotate,
-                    minAngleRotate
+                    FragmentWheelFourGameBindingImpl(binding)
                 ) {
                     button.isEnabled = true
                     runGame = true
